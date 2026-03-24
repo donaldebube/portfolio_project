@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Donald Ebube · Fintech Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --bg:       #090d12;
+  --bg2:      #0d1520;
+  --card:     #111b27;
+  --card2:    #16202e;
+  --sidebar:  #070c11;
+  --accent:   #00d4b8;
+  --accent-d: #00a896;
+  --adim:     rgba(0,212,184,0.10);
+  --bacc:     rgba(0,212,184,0.25);
+  --text:     #ffffff;
+  --text2:    #8896aa;
+  --text3:    #4a5a6e;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --nav-w:    220px;
+  --ease:     cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"] {
+  --bg:      #f0f4f8;
+  --bg2:     #ffffff;
+  --card:    #ffffff;
+  --card2:   #edf2f7;
+  --sidebar: #1a2333;
+  --text:    #0a0e18;
+  --text2:   #3d4f61;
+  --text3:   #8896aa;
+  --border:  rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+}
+
+/* ═══════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text2);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background 0.3s var(--ease), color 0.3s var(--ease);
+  cursor:none;
+}
+a { text-decoration:none; color:inherit; }
+button { cursor:none; border:none; background:none; font-family:inherit; }
+
+/* ═══════════════════════════════════════════════
+   CURSOR  (desktop only)
+═══════════════════════════════════════════════ */
+#cursor-dot, #cursor-ring { pointer-events:none; position:fixed; z-index:9999; }
+#cursor-dot {
+  top:0; left:0; width:8px; height:8px;
+  background:var(--accent); border-radius:50%;
+  transform:translate(-50%,-50%);
+  transition:width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode:screen;
+}
+#cursor-ring {
+  top:0; left:0; width:32px; height:32px;
+  border:1.5px solid var(--bacc); border-radius:50%;
+  transform:translate(-50%,-50%);
+  z-index:9998;
+  transition:width 0.25s, height 0.25s, border-color 0.25s;
+}
+body:has(a:hover,button:hover) #cursor-ring { width:50px; height:50px; border-color:var(--accent); }
+body:has(a:hover,button:hover) #cursor-dot  { opacity:0; }
+
+/* ═══════════════════════════════════════════════
+   NOISE OVERLAY
+═══════════════════════════════════════════════ */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.35;
+}
+
+/* ═══════════════════════════════════════════════
+   BG CANVAS
+═══════════════════════════════════════════════ */
+#bg-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35; }
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+#toast {
+  position:fixed; bottom:2rem; right:2rem; z-index:9999;
+  background:var(--card); border:1px solid var(--bacc);
+  border-radius:10px; padding:0.8rem 1.2rem;
+  font-size:0.82rem; color:var(--text);
+  transform:translateY(80px); opacity:0;
+  transition:all 0.35s var(--ease); pointer-events:none; min-width:200px;
+}
+#toast.show { transform:translateY(0); opacity:1; }
+
+/* ═══════════════════════════════════════════════
+   MOBILE OVERLAY (sidebar backdrop)
+═══════════════════════════════════════════════ */
+#sidebar-overlay {
+  display:none; position:fixed; inset:0; z-index:98;
+  background:rgba(0,0,0,0.55); backdrop-filter:blur(4px);
+  opacity:0; transition:opacity 0.3s var(--ease);
+}
+#sidebar-overlay.show { opacity:1; }
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+#app { display:flex; min-height:100vh; position:relative; z-index:2; }
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════ */
+#sidebar {
+  width:var(--nav-w);
+  min-height:100vh;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  position:fixed; top:0; left:0; bottom:0;
+  z-index:100;
+  transition:background 0.3s var(--ease), transform 0.35s var(--ease);
+  overflow:hidden;
+}
+#sidebar::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:200px;
+  background:linear-gradient(to top, rgba(0,212,184,0.04), transparent);
+  pointer-events:none;
+}
+.sb-brand {
+  padding:1.7rem 1.5rem 1rem;
+  border-bottom:1px solid var(--border);
+}
+.sb-brand-name {
+  font-family:'Syne',sans-serif; font-size:0.96rem; font-weight:800;
+  color:#fff; letter-spacing:-0.01em; line-height:1.2;
+}
+.sb-brand-sub { font-size:0.68rem; color:#6b7f94; margin-top:0.22rem; }
+
+.sb-nav { flex:1; padding:0.6rem 0; overflow-y:auto; }
+.sb-nav-item {
+  display:flex; align-items:center; gap:0.7rem;
+  padding:0.72rem 1.5rem; font-size:0.86rem; font-weight:500; color:#7a8fa8;
+  border-left:3px solid transparent; transition:all 0.2s ease;
+  cursor:none; white-space:nowrap; position:relative; overflow:hidden;
+}
+.sb-nav-item::before {
+  content:''; position:absolute; inset:0;
+  background:var(--adim); opacity:0; transition:opacity 0.2s;
+}
+.sb-nav-item:hover { color:#fff; border-left-color:rgba(0,212,184,0.45); }
+.sb-nav-item:hover::before { opacity:1; }
+.sb-nav-item.active { color:#fff; border-left-color:var(--accent); font-weight:600; background:rgba(0,212,184,0.09); }
+.sb-nav-item .nav-icon { font-size:0.9rem; width:1.1rem; text-align:center; flex-shrink:0; }
+
+.sb-divider { height:1px; background:var(--border); margin:0.6rem 1.2rem; }
+.sb-bottom  { padding:0 1.1rem 1.5rem; }
+
+.btn-cv {
+  width:100%; padding:0.62rem 1rem;
+  background:var(--accent); color:#000;
+  font-size:0.82rem; font-weight:700; border-radius:8px; cursor:none;
+  box-shadow:0 4px 18px rgba(0,212,184,0.22); transition:all 0.2s ease;
+  display:flex; align-items:center; justify-content:center; gap:0.5rem;
+}
+.btn-cv:hover { box-shadow:0 6px 28px rgba(0,212,184,0.38); transform:translateY(-1px); }
+
+.btn-theme {
+  width:100%; padding:0.55rem 1rem; color:#6b7f94;
+  font-size:0.78rem; font-weight:500; border-radius:8px;
+  cursor:none; margin-top:0.5rem;
+  transition:all 0.2s; display:flex; align-items:center; gap:0.5rem;
+}
+.btn-theme:hover { color:#9aaabb; background:rgba(255,255,255,0.04); }
+
+.sb-avail {
+  margin:0.8rem 0; background:rgba(0,212,184,0.07);
+  border:1px solid rgba(0,212,184,0.18); border-radius:8px; padding:0.65rem 0.85rem;
+}
+.sb-avail-head { display:flex; align-items:center; gap:0.4rem; margin-bottom:0.2rem; }
+.sb-avail-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--accent); flex-shrink:0; animation:pulse 2s infinite;
+}
+.sb-avail-label { font-size:0.62rem; color:var(--accent); font-weight:700; text-transform:uppercase; letter-spacing:0.08em; }
+.sb-avail-text  { font-size:0.68rem; color:#6b7f94; line-height:1.55; }
+.sb-copy { text-align:center; font-size:0.54rem; color:rgba(255,255,255,0.13); letter-spacing:0.06em; margin-top:0.8rem; }
+
+/* ═══════════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════════ */
+#main {
+  margin-left:var(--nav-w);
+  flex:1; min-height:100vh;
+  display:flex; flex-direction:column;
+  transition:margin-left 0.35s var(--ease);
+}
+
+/* ═══════════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════════ */
+#topbar {
+  position:sticky; top:0; z-index:50;
+  background:rgba(9,13,18,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0.7rem 2.4rem;
+  display:flex; align-items:center; gap:1rem;
+  transition:background 0.3s;
+}
+[data-theme="light"] #topbar { background:rgba(240,244,248,0.9); }
+
+/* hamburger — hidden on desktop */
+#menu-btn {
+  display:none; width:38px; height:38px; flex-shrink:0;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:8px; cursor:none;
+  align-items:center; justify-content:center; flex-direction:column; gap:5px;
+  transition:border-color 0.2s;
+}
+#menu-btn:hover { border-color:var(--bacc); }
+#menu-btn span {
+  display:block; width:16px; height:2px;
+  background:var(--text2); border-radius:2px;
+  transition:all 0.3s var(--ease);
+}
+#menu-btn.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+#menu-btn.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+#menu-btn.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+#search-wrap {
+  flex:1; max-width:420px;
+  display:flex; align-items:center; gap:0.6rem;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:8px; padding:0.46rem 0.85rem;
+  transition:border-color 0.2s;
+}
+#search-wrap:focus-within { border-color:var(--bacc); }
+#search-wrap svg { color:var(--text3); flex-shrink:0; }
+#search-input {
+  background:none; border:none; outline:none;
+  font-family:'DM Sans',sans-serif; font-size:0.83rem;
+  color:var(--text); width:100%;
+}
+#search-input::placeholder { color:var(--text3); }
+
+.top-toggle {
+  width:38px; height:38px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:8px; font-size:1rem; cursor:none;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s; flex-shrink:0;
+}
+.top-toggle:hover { border-color:var(--bacc); }
+
+/* ═══════════════════════════════════════════════
+   PAGE AREA
+═══════════════════════════════════════════════ */
+#page-wrap { flex:1; padding:2rem 2.4rem 4rem; }
+
+.page { display:none; animation:pageIn 0.45s var(--ease) both; }
+.page.active { display:block; }
+
+@keyframes pageIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ═══════════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════════ */
+/* ── full-width hero top block ── */
+.hero-top {
+  width:100%;
+  margin-bottom:2rem;
+}
+.hero-name {
+  font-family:'Syne',sans-serif;
+  font-size:0.9rem;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:0.6rem;
+}
+.hero-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.2rem,4.5vw,3.8rem);
+  font-weight:800; color:var(--text);
+  line-height:1.04; margin-bottom:0;
+  width:100%;
+}
+.hero-title .accent { color:var(--accent); }
+.page-title  { font-family:'Syne',sans-serif; font-size:clamp(1.9rem,4vw,2.7rem); font-weight:800; color:var(--text); line-height:1.05; margin-bottom:0.45rem; }
+.page-title .accent { color:var(--accent); }
+.section-title { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:700; color:var(--text); margin-bottom:0.3rem; }
+.page-subtitle { font-size:0.9rem; color:var(--text2); max-width:520px; line-height:1.85; margin-bottom:1.6rem; }
+.sec-label { font-size:0.61rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.12em; font-weight:600; margin-bottom:0.45rem; }
+
+/* ═══════════════════════════════════════════════
+   TAGS
+═══════════════════════════════════════════════ */
+.tag {
+  display:inline-block; background:rgba(0,212,184,0.10); color:var(--accent);
+  border:1px solid rgba(0,212,184,0.25); border-radius:5px;
+  padding:0.15rem 0.46rem; font-size:0.62rem; font-weight:700;
+  letter-spacing:0.07em; text-transform:uppercase;
+  margin-right:0.3rem; margin-bottom:0.25rem;
+}
+
+/* ═══════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════ */
+.card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:1.5rem;
+  transition:border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.card:hover { border-color:var(--bacc); }
+.card.accent-border { border-color:var(--bacc); }
+
+/* ═══════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════ */
+.btn {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding:0.58rem 1.4rem; font-size:0.85rem; font-weight:600;
+  border-radius:8px; cursor:none; transition:all 0.2s ease;
+}
+.btn-primary  { background:var(--accent); color:#000; border:none; box-shadow:0 4px 18px rgba(0,212,184,0.22); }
+.btn-primary:hover  { box-shadow:0 6px 28px rgba(0,212,184,0.40); transform:translateY(-1px); }
+.btn-secondary { background:transparent; color:var(--text); border:1px solid var(--border2); }
+.btn-secondary:hover { border-color:var(--bacc); color:var(--accent); background:var(--adim); transform:translateY(-1px); }
+
+/* ═══════════════════════════════════════════════
+   FILTER PILLS
+═══════════════════════════════════════════════ */
+.filter-row { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+.filter-pill {
+  padding:0.36rem 0.9rem; background:var(--card); color:var(--text2);
+  border:1px solid var(--border); border-radius:99px;
+  font-size:0.78rem; font-weight:500; cursor:none; transition:all 0.2s;
+}
+.filter-pill:hover { border-color:var(--bacc); color:var(--accent); }
+.filter-pill.active { background:var(--accent); color:#000; border-color:var(--accent); font-weight:700; }
+
+/* ═══════════════════════════════════════════════
+   GRIDS  — desktop defaults
+═══════════════════════════════════════════════ */
+.grid-2     { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+.grid-3     { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+.grid-4     { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+.cols-hero  { display:grid; grid-template-columns:1.5fr 1fr; gap:2rem; align-items:start; }
+.cols-main  { display:grid; grid-template-columns:1.2fr 1fr; gap:2rem; align-items:start; }
+.cols-skill { display:grid; grid-template-columns:1.15fr 1fr; gap:2rem; align-items:start; }
+
+.divider { height:1px; background:var(--border); margin:1.8rem 0; }
+
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.88)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes barFill { from{width:0!important} }
+
+.stagger > * { opacity:0; animation:fadeUp 0.5s ease both; }
+.stagger > *:nth-child(1){animation-delay:0.05s}
+.stagger > *:nth-child(2){animation-delay:0.12s}
+.stagger > *:nth-child(3){animation-delay:0.19s}
+.stagger > *:nth-child(4){animation-delay:0.26s}
+.stagger > *:nth-child(5){animation-delay:0.33s}
+.stagger > *:nth-child(6){animation-delay:0.40s}
+
+/* ═══════════════════════════════════════════════
+   OVERVIEW COMPONENTS
+═══════════════════════════════════════════════ */
+.avail-badge { display:inline-flex; align-items:center; gap:0.5rem; margin-bottom:1.15rem; }
+.avail-dot   { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse 2s infinite; }
+.avail-text  { font-size:0.68rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.12em; font-weight:700; }
+.hero-desc   { font-size:0.93rem; color:var(--text2); line-height:1.9; width:100%; margin-bottom:1.8rem; }
+
+.hero-bio {
+  width:100%;
+  margin-bottom:1.8rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.85rem;
+}
+.hero-bio p {
+  font-size:0.88rem;
+  color:var(--text2);
+  line-height:1.85;
+  margin:0;
+}
+.hero-bio p strong {
+  color:var(--text);
+  font-weight:600;
+}
+.hero-btns   { display:flex; gap:0.8rem; flex-wrap:wrap; }
+
+.method-drawer {
+  margin-top:1.1rem; background:var(--card2); border:1px solid var(--bacc);
+  border-radius:14px; padding:0 1.4rem; overflow:hidden;
+  max-height:0; opacity:0;
+  transition:max-height 0.5s var(--ease), opacity 0.3s, padding 0.3s;
+}
+.method-drawer.open { max-height:600px; opacity:1; padding:1.4rem; }
+.method-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:0.5rem; }
+.method-item-title { font-family:'Syne',sans-serif; font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:0.25rem; }
+.method-item-desc  { font-size:0.77rem; color:var(--text2); line-height:1.7; }
+
+.tenure-card { position:relative; overflow:hidden; }
+.tenure-card::before { content:''; position:absolute; top:-40px; right:-40px; width:150px; height:150px; border-radius:50%; background:var(--adim); pointer-events:none; }
+.tenure-num  { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--text); margin-bottom:0.9rem; display:flex; align-items:center; gap:0.5rem; }
+
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:1.15rem; text-align:center; transition:all 0.25s; position:relative; overflow:hidden; }
+.stat-card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,var(--adim),transparent); opacity:0; transition:opacity 0.3s; }
+.stat-card:hover { border-color:var(--bacc); transform:translateY(-2px); }
+.stat-card:hover::after { opacity:1; }
+.stat-val { font-family:'Syne',sans-serif; font-size:1.85rem; font-weight:800; color:var(--accent); line-height:1; display:block; }
+.stat-lbl { font-size:0.64rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; margin-top:0.3rem; display:block; }
+
+.live-badge { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:0.17rem 0.55rem; font-size:0.6rem; color:var(--accent); font-weight:700; letter-spacing:0.08em; }
+
+/* tool strip pills */
+.tool-pill {
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:99px;
+  padding:0.38rem 0.85rem;
+  font-size:0.78rem;
+  font-weight:500;
+  color:var(--text2);
+  font-family:'DM Sans',sans-serif;
+  transition:all 0.2s ease;
+  cursor:default;
+}
+.tool-pill:hover {
+  border-color:var(--bacc);
+  color:var(--text);
+  background:var(--adim);
+}
+.eff-badge  { background:var(--accent); color:#000; font-size:0.6rem; font-weight:800; padding:0.2rem 0.5rem; border-radius:4px; letter-spacing:0.06em; white-space:nowrap; }
+.data-row   { background:var(--card2); padding:0.5rem 0.75rem; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; }
+.data-bar   { height:3px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden; margin-bottom:0.6rem; }
+.data-bar-fill { height:100%; border-radius:99px; animation:barFill 1.2s ease both; }
+
+.mini-proj-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:1.1rem; transition:all 0.25s; cursor:none; }
+.mini-proj-card:hover { border-color:var(--bacc); transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,212,184,0.08); }
+.mini-proj-icon  { font-size:1.9rem; margin-bottom:0.55rem; }
+.mini-proj-title { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:0.3rem; }
+.mini-proj-desc  { font-size:0.76rem; color:var(--text2); line-height:1.65; margin-bottom:0.6rem; }
+.mini-proj-impact{ font-size:0.7rem; color:var(--accent); font-weight:600; }
+
+/* ═══════════════════════════════════════════════
+   PROJECTS
+═══════════════════════════════════════════════ */
+.proj-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:all 0.3s ease; cursor:none; }
+.proj-card:hover { border-color:var(--bacc); transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,212,184,0.09); }
+.proj-thumb { height:130px; background:var(--card2); display:flex; align-items:center; justify-content:center; font-size:2.9rem; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
+.proj-thumb::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,transparent 60%,var(--adim)); }
+.proj-body  { padding:1.15rem; }
+.proj-title { font-family:'Syne',sans-serif; font-size:0.98rem; font-weight:700; color:var(--text); margin-bottom:0.35rem; margin-top:0.5rem; }
+.proj-desc  { font-size:0.79rem; color:var(--text2); line-height:1.7; margin-bottom:0.75rem; }
+.proj-foot  { display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:0.6rem; }
+.proj-status{ font-size:0.68rem; color:var(--text3); }
+.proj-impact{ font-size:0.7rem; color:var(--accent); font-weight:700; }
+.count-badge{ font-size:0.67rem; color:var(--text3); letter-spacing:0.08em; margin-bottom:1.3rem; }
+.count-badge .hl { color:var(--accent); font-weight:700; }
+
+/* ═══════════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════════ */
+.skill-row  { margin-bottom:1.4rem; }
+.skill-head { display:flex; justify-content:space-between; margin-bottom:0.28rem; }
+.skill-name { font-family:'Syne',sans-serif; font-size:0.79rem; font-weight:700; color:var(--text); letter-spacing:0.04em; }
+.skill-pct  { font-family:'Syne',sans-serif; font-size:0.79rem; font-weight:700; color:var(--accent); }
+.skill-track{ height:3px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden; margin-bottom:0.28rem; }
+.skill-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,rgba(0,212,184,0.5),var(--accent)); width:0; transition:width 1.4s cubic-bezier(0.4,0,0.2,1); }
+.skill-sub  { font-size:0.61rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.05em; }
+.perf-val   { font-family:'Syne',sans-serif; font-size:2.8rem; font-weight:800; color:var(--text); text-align:center; line-height:1; }
+.perf-badge { background:var(--accent); color:#000; font-size:0.6rem; font-weight:800; padding:0.2rem 0.65rem; border-radius:4px; letter-spacing:0.06em; }
+.mini-metric{ flex:1; background:var(--card2); border-radius:10px; padding:0.75rem; }
+.mini-metric-lbl { font-size:0.61rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.18rem; }
+.mini-metric-val { font-family:'Syne',sans-serif; font-size:1.35rem; font-weight:800; color:var(--text); }
+canvas { display:block; }
+.chart-wrap { position:relative; width:100%; }
+
+/* ═══════════════════════════════════════════════
+   CASE STUDIES
+═══════════════════════════════════════════════ */
+.cs-list  { }
+.cs-detail { display:none; }
+.cs-detail.active { display:block; animation:pageIn 0.4s ease both; }
+.cs-list.hidden   { display:none; }
+
+.cs-hero { background:linear-gradient(135deg,var(--card),var(--card2)); border:1px solid var(--bacc); border-radius:20px; padding:2.4rem; margin-bottom:2rem; position:relative; overflow:hidden; }
+.cs-hero::before { content:''; position:absolute; width:220px; height:220px; border-radius:50%; background:var(--adim); top:-70px; right:-50px; pointer-events:none; }
+.cs-hero::after  { content:''; position:absolute; width:100px; height:100px; border-radius:50%; background:var(--adim); bottom:-20px; left:40%; pointer-events:none; }
+
+.cs-metric-card  { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.1rem 1.3rem; margin-bottom:0.75rem; }
+.cs-metric-val   { font-family:'Syne',sans-serif; font-size:2.3rem; font-weight:800; color:var(--text); line-height:1; }
+.cs-metric-badge { font-size:0.7rem; color:var(--accent); font-weight:600; text-align:right; line-height:1.5; }
+.cs-metric-track { height:3px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden; margin-top:0.3rem; }
+.cs-metric-fill  { height:100%; border-radius:99px; background:var(--accent); width:0; transition:width 1.4s cubic-bezier(0.4,0,0.2,1); }
+
+.acc-item  { background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:0.7rem; overflow:hidden; transition:border-color 0.2s; }
+.acc-item.open { border-color:var(--bacc); }
+.acc-head  { padding:0.9rem 1.2rem; cursor:none; display:flex; justify-content:space-between; align-items:center; font-size:0.88rem; font-weight:600; color:var(--text); transition:background 0.2s; }
+.acc-head:hover { background:var(--adim); }
+.acc-arrow { transition:transform 0.3s ease; color:var(--text3); font-size:0.75rem; }
+.acc-item.open .acc-arrow { transform:rotate(180deg); color:var(--accent); }
+.acc-body  { max-height:0; overflow:hidden; transition:max-height 0.45s var(--ease); }
+.acc-body-inner { padding:0 1.2rem 1.1rem; }
+.acc-body-inner p  { font-size:0.86rem; color:var(--text2); line-height:1.9; margin-bottom:0.8rem; }
+.acc-body-inner ul { font-size:0.84rem; color:var(--text2); line-height:2; padding-left:1.2rem; margin:0; }
+.nda-box { display:inline-flex; align-items:center; gap:0.8rem; background:var(--card); border:1px dashed var(--border2); border-radius:10px; padding:0.85rem 1.25rem; margin-top:1.5rem; font-size:0.79rem; color:var(--text2); line-height:1.5; }
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+.page-footer { text-align:center; padding:2rem 0 0.5rem; border-top:1px solid var(--border); margin-top:3rem; font-size:0.64rem; color:var(--text3); letter-spacing:0.06em; }
+.page-footer a { color:var(--text3); margin:0 0.35rem; transition:color 0.2s; }
+.page-footer a:hover { color:var(--accent); }
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,212,184,0.2);border-radius:99px}
+
+/* ═══════════════════════════════════════════════
+   ░░░  RESPONSIVE BREAKPOINTS  ░░░
+═══════════════════════════════════════════════ */
+
+/* ── TABLET  (max 1024px) ─────────────────── */
+@media (max-width:1024px) {
+  :root { --nav-w:190px; }
+
+  #page-wrap { padding:1.6rem 1.8rem 3rem; }
+  #topbar    { padding:0.65rem 1.8rem; }
+
+  /* compress grids */
+  .grid-4    { grid-template-columns:repeat(2,1fr); }
+  .grid-3    { grid-template-columns:repeat(2,1fr); }
+  .cols-hero { grid-template-columns:1.3fr 1fr; gap:1.5rem; }
+  .cols-skill{ grid-template-columns:1.2fr 1fr; gap:1.4rem; }
+
+  .hero-title { font-size:clamp(1.9rem,3.5vw,2.8rem); }
+
+  /* method grid: stack on tablet */
+  .method-grid { grid-template-columns:1fr; }
+}
+
+/* ── SMALL TABLET / LARGE PHONE  (max 768px) ─ */
+@media (max-width:768px) {
+  body { cursor:auto; }
+
+  /* hide custom cursor on touch */
+  #cursor-dot, #cursor-ring { display:none; }
+
+  /* sidebar: slide off-screen, overlay shows on open */
+  #sidebar {
+    transform:translateX(-100%);
+    box-shadow:none;
+    z-index:200;
+  }
+  #sidebar.open {
+    transform:translateX(0);
+    box-shadow:8px 0 40px rgba(0,0,0,0.5);
+  }
+  #sidebar-overlay { display:block; }
+
+  #main { margin-left:0 !important; }
+
+  /* show hamburger */
+  #menu-btn { display:flex; }
+
+  /* topbar tighter */
+  #topbar { padding:0.6rem 1rem; gap:0.6rem; }
+  #search-wrap { max-width:none; }
+
+  /* page padding */
+  #page-wrap { padding:1.4rem 1rem 3rem; }
+
+  /* hero stacks */
+  .cols-hero  { grid-template-columns:1fr; gap:1.4rem; }
+  .cols-main  { grid-template-columns:1fr; gap:1.4rem; }
+  .cols-skill { grid-template-columns:1fr; gap:1.4rem; }
+
+  /* grids: 2-col minimum */
+  .grid-2  { grid-template-columns:1fr; }
+  .grid-3  { grid-template-columns:1fr 1fr; gap:0.9rem; }
+  .grid-4  { grid-template-columns:1fr 1fr; gap:0.9rem; }
+
+  /* smaller hero text */
+  .hero-title  { font-size:clamp(1.7rem,7vw,2.4rem); }
+  .page-title  { font-size:clamp(1.6rem,6vw,2.2rem); }
+  .hero-desc   { font-size:0.88rem; max-width:100%; }
+  .tenure-num  { font-size:1.65rem; }
+
+  /* stat values */
+  .stat-val  { font-size:1.5rem; }
+
+  /* method grid stacks */
+  .method-grid { grid-template-columns:1fr; }
+
+  /* cards less padding on mobile */
+  .card { padding:1.1rem; }
+
+  /* cs hero */
+  .cs-hero { padding:1.5rem; }
+
+  /* acc heads can wrap */
+  .acc-head { font-size:0.82rem; }
+
+  /* nda box stacks */
+  .nda-box { flex-direction:column; align-items:flex-start; gap:0.5rem; }
+
+  /* btn full-width on mobile hero */
+  .hero-btns { flex-direction:column; gap:0.6rem; }
+  .hero-btns .btn { width:100%; justify-content:center; }
+
+  /* footer links stack */
+  .page-footer { font-size:0.6rem; line-height:2; }
+}
+
+/* ── PHONE  (max 480px) ──────────────────────── */
+@media (max-width:480px) {
+  #page-wrap { padding:1rem 0.85rem 2.5rem; }
+  #topbar    { padding:0.55rem 0.85rem; gap:0.5rem; }
+
+  /* single column everywhere */
+  .grid-3 { grid-template-columns:1fr; }
+  .grid-4 { grid-template-columns:1fr 1fr; }
+
+  /* search collapses */
+  #search-wrap { min-width:0; }
+
+  .hero-title  { font-size:clamp(1.5rem,8vw,2rem); }
+  .page-title  { font-size:clamp(1.4rem,7vw,1.9rem); }
+  .page-subtitle { font-size:0.84rem; }
+
+  .stat-val  { font-size:1.4rem; }
+  .stat-lbl  { font-size:0.58rem; }
+  .stat-card { padding:0.85rem 0.7rem; }
+
+  /* skill chart: reduce height */
+  #bar-chart-canvas { height:110px !important; }
+  .perf-val { font-size:2.2rem; }
+
+  /* cs metrics larger text fix */
+  .cs-metric-val { font-size:1.8rem; }
+
+  /* proj thumb shorter */
+  .proj-thumb { height:100px; font-size:2.2rem; }
+
+  /* btn sizing */
+  .btn { padding:0.55rem 1rem; font-size:0.82rem; }
+  .btn-cv { font-size:0.78rem; padding:0.55rem 0.8rem; }
+
+  /* topbar: hide search text on very small */
+  #search-input::placeholder { font-size:0.75rem; }
+
+  /* tool pills smaller on phone */
+  .tool-pill { font-size:0.72rem; padding:0.32rem 0.7rem; }
+
+  /* mini proj single col */
+  #recent-projects { grid-template-columns:1fr; }
+
+  /* accordion body */
+  .acc-body-inner { padding:0 0.85rem 0.85rem; }
+  .acc-body-inner p { font-size:0.82rem; }
+}
+
+/* ── VERY SMALL (max 360px) ─────────────────── */
+@media (max-width:360px) {
+  .grid-4 { grid-template-columns:1fr; }
+  .hero-title { font-size:1.5rem; }
+  .page-title { font-size:1.35rem; }
+  .cs-hero { padding:1.1rem; }
+  .card   { border-radius:12px; }
+}
+
+/* ── LARGE DESKTOP  (min 1280px) ─────────────── */
+@media (min-width:1280px) {
+  :root { --nav-w:230px; }
+  #page-wrap { padding:2.2rem 3rem 4rem; }
+  #topbar    { padding:0.75rem 3rem; }
+}
+
+/* ── ULTRA WIDE (min 1600px) ──────────────────── */
+@media (min-width:1600px) {
+  :root { --nav-w:250px; }
+  #page-wrap { padding:2.5rem 3.5rem 5rem; max-width:1400px; }
+  .hero-title { font-size:3.6rem; }
+}
+
+/* ═══════════════════════════════════════════════
+   TOUCH — remove hover transforms on touch devices
+═══════════════════════════════════════════════ */
+@media (hover:none) {
+  .card:hover,
+  .stat-card:hover,
+  .mini-proj-card:hover,
+  .proj-card:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-cv:hover { transform:none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+<div id="toast">📄 CV download coming soon!</div>
+<div id="sidebar-overlay"></div>
+
+<div id="app">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <nav id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-brand-name">Donald Ebube</div>
+      <div class="sb-brand-sub">Data Analyst → Analytics Engineer</div>
+    </div>
+    <div class="sb-nav" id="nav-list">
+      <div class="sb-nav-item active" data-page="overview"><span class="nav-icon">⊞</span> Overview</div>
+      <div class="sb-nav-item" data-page="projects"><span class="nav-icon">📁</span> Projects</div>
+      <div class="sb-nav-item" data-page="skills"><span class="nav-icon">◎</span> Skills</div>
+      <div class="sb-nav-item" data-page="casestudies"><span class="nav-icon">📋</span> Case Studies</div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-bottom">
+      <button class="btn-cv" id="btn-dl-cv">⬇ &nbsp;Download CV</button>
+      <button class="btn-theme" id="btn-theme-sb">☀️ &nbsp;Light Mode</button>
+      <div class="sb-avail">
+        <div class="sb-avail-head">
+          <div class="sb-avail-dot"></div>
+          <div class="sb-avail-label">Available</div>
+        </div>
+        <div class="sb-avail-text">Open to remote job opportunities, consulting,  &amp; freelance engagements.</div>
+      </div>
+      <div class="sb-copy">© 2026 Donald Ebube</div>
+    </div>
+  </nav>
+
+  <!-- ═══ MAIN ═══ -->
+  <div id="main">
+
+    <!-- Top bar -->
+    <div id="topbar">
+      <!-- hamburger (mobile) -->
+      <button id="menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div id="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input id="search-input" type="text" placeholder="Search insights…"/>
+      </div>
+      <div style="flex:1"></div>
+      <button class="top-toggle" id="btn-theme-top">🌙</button>
+    </div>
+
+    <div id="page-wrap">
+
+      <!-- ════ OVERVIEW ════ -->
+      <div class="page active" id="page-overview">
+
+        <!-- ── Full-width name + headline ── -->
+        <div class="hero-top stagger">
+          <div class="avail-badge">
+            <div class="avail-dot"></div>
+            <div class="avail-text">Available for Consulting &amp; Freelance</div>
+          </div>
+          <p class="hero-name">Donald Ebube</p>
+          <h1 class="hero-title">
+            Turning <span class="accent">Fintech Data</span> <br>Into Actionable Insights.
+          </h1>
+        </div>
+
+        <!-- ── Two-column: bio left | experience card right ── -->
+        <div class="cols-hero stagger" style="margin-bottom:2rem;">
+          <div>
+            <div class="hero-bio">
+              <p>I'm a Data Analyst who transforms raw data into clear, actionable insights.</p>
+              <p>With certifications in <strong>Google Data Analytics</strong>, <strong>Google Business Intelligence</strong>, and the <strong>Google Cloud Data Analytics Professional Certificate</strong>, I've deepened my expertise in data visualisation and dashboard design — skills that have significantly improved the way I communicate insights and track performance at work.</p>
+              <p>I operate at the intersection of analytics, storytelling, and strategy — helping teams make informed decisions through clear, impactful insights. From A/B test evaluation to KPI tracking, customer retention, and churn prediction, I break down complex data into practical solutions.</p>
+              <p>My toolkit includes <strong>BigQuery</strong>, <strong>Looker Studio</strong>, <strong>Power BI</strong>, and <strong>Google Sheets</strong> — tools I use daily to build clean, user-focused dashboards and reports. Thanks to my background in UI/UX, I don't just visualise data — I craft intuitive experiences that make insights easy to act on.</p>
+            </div>
+            <div class="hero-btns">
+              <button class="btn btn-primary" id="btn-view-proj">View Projects →</button>
+              <button class="btn btn-secondary" id="btn-methodology">How I Work</button>
+            </div>
+            <div class="method-drawer" id="method-drawer">
+              <div class="sec-label">How I Work</div>
+              <div class="method-grid">
+                <div><div class="method-item-title">① Understand the Problem</div><div class="method-item-desc">Start by talking to the team — what decisions need to be made? What's currently tracked manually? What's missing? Context before code.</div></div>
+                <div><div class="method-item-title">② Query &amp; Explore</div><div class="method-item-desc">Write SQL to pull and explore the data in BigQuery. Profile it, check for gaps, and identify the right metrics before building anything.</div></div>
+                <div><div class="method-item-title">③ Build &amp; Automate</div><div class="method-item-desc">Turn findings into dashboards in Looker Studio and automate repetitive reporting workflows with Google Apps Script, saving teams hours every week.</div></div>
+                <div><div class="method-item-title">④ Improve Over Time</div><div class="method-item-desc">Collect feedback, refine queries, and optimise for speed and cost. Good data work is iterative, not a one-time delivery.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card accent-border tenure-card">
+            <div class="sec-label">EXPERIENCE</div>
+            <div class="tenure-num">3 Years 📊</div>
+            <div style="height:1px;background:var(--border);margin:0.7rem 0;"></div>
+            <div style="display:flex;flex-direction:column;gap:0.8rem;">
+              <div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">📈</span><div><div style="font-family:'Syne',sans-serif;font-size:0.84rem;font-weight:700;color:var(--text);margin-bottom:0.12rem;">Fintech Analytics</div><div style="font-size:0.73rem;color:var(--text3);line-height:1.55;">Transaction monitoring, revenue tracking, and performance reporting.</div></div></div>
+              <div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">⚙️</span><div><div style="font-family:'Syne',sans-serif;font-size:0.84rem;font-weight:700;color:var(--text);margin-bottom:0.12rem;">Automation &amp; Workflows</div><div style="font-size:0.73rem;color:var(--text3);line-height:1.55;">Reducing manual reporting using SQL, BigQuery, and Google Apps Script.</div></div></div>
+              <div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">🎨</span><div><div style="font-family:'Syne',sans-serif;font-size:0.84rem;font-weight:700;color:var(--text);margin-bottom:0.12rem;">Dashboard Design</div><div style="font-size:0.73rem;color:var(--text3);line-height:1.55;">Building clear, practical dashboards in Looker Studio with a UX/UI background.</div></div></div>
+              <div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">🎓</span><div><div style="font-family:'Syne',sans-serif;font-size:0.84rem;font-weight:700;color:var(--text);margin-bottom:0.12rem;">Certifications</div><div style="font-size:0.73rem;color:var(--text3);line-height:1.55;">Google Data Analytics · Google BI · Google Cloud Data Analytics</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-4 stagger" style="margin-bottom:2.5rem;">
+          <div class="stat-card"><span class="stat-val" data-count="50" data-suffix="M+">0</span><span class="stat-lbl">Rows Queried Daily</span></div>
+          <div class="stat-card"><span class="stat-val" data-count="99" data-suffix="%+">0</span><span class="stat-lbl">Query Reliability</span></div>
+          <div class="stat-card"><span class="stat-val" data-count="20" data-suffix="+ hrs">0</span><span class="stat-lbl">Saved Weekly via Automation</span></div>
+          <div class="stat-card"><span class="stat-val" data-count="3" data-suffix="">0</span><span class="stat-lbl">Years in Fintech</span></div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;flex-wrap:wrap;gap:0.5rem;">
+          <div class="section-title">Tools I Work With</div>
+          <div class="live-badge">DAILY USAGE</div>
+        </div>
+        <p style="font-size:0.82rem;color:var(--text3);margin-bottom:1.2rem;">The tools and systems I use day-to-day to query, analyse, visualise, and automate.</p>
+
+        <!-- Tool strip -->
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.8rem;">
+          <span class="tool-pill">🔎 BigQuery SQL</span>
+          <span class="tool-pill">📊 Looker Studio</span>
+          <span class="tool-pill">📗 Excel / Google Sheets</span>
+          <span class="tool-pill">📈 Microsoft Power BI</span>
+          <span class="tool-pill">🗄️ Microsoft SQL Server</span>
+          <span class="tool-pill">❄️ Snowflake</span>
+          <span class="tool-pill">⚙️ Google Apps Script</span>
+          <span class="tool-pill">🐍 Python / Streamlit</span>
+          <span class="tool-pill">💬 Slack Workflows</span>
+        </div>
+
+        <!-- 3 cards -->
+        <div class="grid-3 stagger" style="margin-bottom:2.5rem;">
+
+          <!-- Card 1: Data Warehouses -->
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem;">
+              <span style="font-size:1.2rem;">🗄️</span>
+              <div style="font-family:'Syne',sans-serif;font-size:0.93rem;font-weight:700;color:var(--text);">Data Warehouses</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.9rem;">
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">BigQuery</span><span style="font-size:0.68rem;color:var(--accent);font-weight:700;">Primary</span></div>
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Microsoft SQL Server</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Familiar</span></div>
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Snowflake</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Familiar</span></div>
+            </div>
+            <div style="font-size:0.79rem;color:var(--text2);line-height:1.75;">Writing complex SQL queries, optimising for performance, and managing large datasets across cloud and on-premise warehouses.</div>
+          </div>
+
+          <!-- Card 2: Dashboards & Reporting -->
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem;">
+              <span style="font-size:1.2rem;">📊</span>
+              <div style="font-family:'Syne',sans-serif;font-size:0.93rem;font-weight:700;color:var(--text);">Dashboards &amp; Reporting</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.9rem;">
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Looker Studio</span><span style="font-size:0.68rem;color:var(--accent);font-weight:700;">Primary</span></div>
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Microsoft Power BI</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Familiar</span></div>
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Excel / Google Sheets</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Daily use</span></div>
+            </div>
+            <div style="font-size:0.79rem;color:var(--text2);line-height:1.75;">Designing clear, focused dashboards that give teams a reliable view of KPIs, trends, and performance — built with UX in mind.</div>
+          </div>
+
+          <!-- Card 3: Automation -->
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem;">
+              <span style="font-size:1.2rem;">⚙️</span>
+              <div style="font-family:'Syne',sans-serif;font-size:0.93rem;font-weight:700;color:var(--text);">Automation &amp; Internal Tools</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.35rem;margin-bottom:0.9rem;">
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Google Apps Script</span><span style="font-size:0.68rem;color:var(--accent);font-weight:700;">Active</span></div>
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Python &amp; Streamlit</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Internal tools</span></div>
+              <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Slack Workflows</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Alerts &amp; notifications</span></div>
+            </div>
+            <div style="font-size:0.79rem;color:var(--text2);line-height:1.75;">Automating repetitive reporting tasks, building lightweight internal tools with Streamlit, and setting up Slack alerts to keep teams informed without extra manual work.</div>
+          </div>
+
+        </div>
+
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:1.1rem;">Recent Projects</div>
+        <div class="grid-3 stagger" id="recent-projects" style="margin-bottom:1.5rem;"></div>
+        <div style="text-align:center;"><button class="btn btn-secondary" id="btn-all-proj">View All Projects →</button></div>
+
+        <div class="page-footer">© 2024 Donald Ebube. BUILT WITH INTENTIONAL ASYMMETRY.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="#">GITHUB</a> · <a href="#">CONTACT</a></div>
+      </div>
+
+      <!-- ════ PROJECTS ════ -->
+      <div class="page" id="page-projects">
+        <h1 class="page-title">Project <span class="accent">Gallery</span></h1>
+        <p class="page-subtitle">A selection of real-world data analysis, dashboards, and automation work built for fintech teams.</p>
+        <div class="filter-row" id="filter-row"></div>
+        <div class="count-badge" id="proj-count"></div>
+        <div class="grid-3" id="proj-grid"></div>
+        <div class="page-footer">© 2024 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="#">GITHUB</a> · <a href="#">CONTACT</a></div>
+      </div>
+
+      <!-- ════ SKILLS ════ -->
+      <div class="page" id="page-skills">
+        <h1 class="page-title">Tools &amp; <span class="accent">Skills</span><br>I Use Daily</h1>
+        <div style="width:40px;height:3px;background:var(--accent);border-radius:99px;margin-bottom:0.75rem;"></div>
+        <p class="page-subtitle">A practical toolkit built around SQL, data analysis, and reporting automation.</p>
+        <div class="cols-skill">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;">
+              <div style="font-family:'Syne',sans-serif;font-size:0.93rem;font-weight:700;color:var(--text);">📊 Core Tool Stack</div>
+              <span style="font-size:0.88rem;color:var(--text3);font-family:monospace;">&gt;_</span>
+            </div>
+            <div id="skill-bars"></div>
+          </div>
+          <div>
+            <div class="card accent-border" style="margin-bottom:1.2rem;">
+              <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.85rem;flex-wrap:wrap;">
+                <div class="avail-dot" style="width:7px;height:7px;"></div>
+                <div class="sec-label" style="margin:0;">SAMPLE DASHBOARD KPIS</div>
+                <span style="margin-left:auto;font-size:0.6rem;color:var(--text3);background:rgba(255,255,255,0.05);padding:0.13rem 0.42rem;border-radius:4px;white-space:nowrap;">LOOKER STUDIO</span>
+              </div>
+              <div class="sec-label">METRICS I TYPICALLY TRACK</div>
+              <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem;margin-bottom:1rem;">
+                <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Revenue Trends</span><span style="font-size:0.68rem;color:var(--accent);font-weight:600;">Daily · Weekly</span></div>
+                <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Transaction Volumes</span><span style="font-size:0.68rem;color:var(--accent);font-weight:600;">Live monitoring</span></div>
+                <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Conversion Rates</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Funnel analysis</span></div>
+                <div class="data-row"><span style="font-size:0.82rem;color:var(--text);">Query Performance</span><span style="font-size:0.68rem;color:var(--text3);font-weight:600;">Cost optimised</span></div>
+              </div>
+              <div style="display:flex;gap:0.65rem;margin-top:0.5rem;">
+                <div class="mini-metric"><div class="mini-metric-lbl">REPORTING TURNAROUND</div><div class="mini-metric-val" style="font-size:1rem;">Faster</div></div>
+                <div class="mini-metric"><div class="mini-metric-lbl">QUERY LATENCY</div><div class="mini-metric-val" style="font-size:1rem;">Optimised</div></div>
+              </div>
+            </div>
+            <button class="btn btn-secondary" style="width:100%;" id="btn-sk-proj">View Projects →</button>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="grid-3 stagger">
+          <div class="card"><div style="font-size:1.4rem;margin-bottom:0.55rem;color:var(--accent);">📊</div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:0.35rem;">Dashboard Design</div><div style="font-size:0.78rem;color:var(--text2);line-height:1.75;">Designing clear, focused dashboards in Looker Studio that highlight the metrics teams actually need to make decisions.</div></div>
+          <div class="card"><div style="font-size:1.4rem;margin-bottom:0.55rem;color:var(--accent);">🗂️</div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:0.35rem;">Data Structuring</div><div style="font-size:0.78rem;color:var(--text2);line-height:1.75;">Organising datasets, defining metrics consistently, and making sure reports tell the same story across the business.</div></div>
+          <div class="card"><div style="font-size:1.4rem;margin-bottom:0.55rem;color:var(--accent);">☁️</div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:0.35rem;">Google Cloud (GCP)</div><div style="font-size:0.78rem;color:var(--text2);line-height:1.75;">Working with BigQuery and Google Cloud tools daily — querying, scheduling, and managing data at scale.</div></div>
+        </div>
+        <div class="page-footer">© 2024 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="#">GITHUB</a> · <a href="#">CONTACT</a></div>
+      </div>
+
+      <!-- ════ CASE STUDIES ════ -->
+      <div class="page" id="page-casestudies">
+        <div class="cs-list" id="cs-list">
+          <h1 class="page-title">Case <span class="accent">Studies</span></h1>
+          <p class="page-subtitle">A closer look at how I approached specific data problems — from understanding the brief to delivering a working solution.</p>
+          <div class="card accent-border" style="max-width:740px;margin-bottom:1.5rem;">
+            <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.9rem;flex-wrap:wrap;">
+              <span class="tag">FINTECH · AUTOMATION</span>
+              <span style="font-size:0.74rem;color:var(--text3);">Case Study #001</span>
+              <span style="margin-left:auto;font-size:0.67rem;color:var(--accent);font-weight:700;">Featured</span>
+            </div>
+            <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.3rem,4vw,1.75rem);font-weight:800;color:var(--text);margin-bottom:0.65rem;line-height:1.1;">Automating Daily Reconciliation Reports.</h2>
+            <p style="font-size:0.87rem;color:var(--text2);line-height:1.85;max-width:590px;margin-bottom:1.1rem;">A recurring manual task that consumed hours of analyst time every day — rebuilt as a fully automated Apps Script pipeline that runs at midnight and delivers a clean report by morning.</p>
+            <div style="display:flex;gap:1.5rem;margin-bottom:1.2rem;flex-wrap:wrap;" class="stagger">
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--accent);">~13 hrs</div><div class="sec-label" style="margin:0.1rem 0 0;">Saved Daily</div></div>
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--accent);">0</div><div class="sec-label" style="margin:0.1rem 0 0;">Manual Steps Remaining</div></div>
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800;color:var(--accent);">Daily</div><div class="sec-label" style="margin:0.1rem 0 0;">Auto-runs at Midnight</div></div>
+            </div>
+            <span class="tag">Google Apps Script</span><span class="tag">BigQuery</span><span class="tag">Google Sheets</span><span class="tag">Looker Studio</span>
+          </div>
+          <button class="btn btn-primary" id="btn-open-cs">Read Full Case Study →</button>
+          <div class="nda-box"><span style="font-size:1rem;">🔒</span>2 additional case studies under NDA. Available upon request.</div>
+        </div>
+
+        <div class="cs-detail" id="cs-detail">
+          <button class="btn btn-secondary" id="btn-back-cs" style="margin-bottom:1.5rem;">← Back to Case Studies</button>
+          <div class="cs-hero">
+            <div style="position:relative;z-index:1;">
+              <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:0.9rem;flex-wrap:wrap;"><span class="tag">FINTECH · AUTOMATION</span><span style="font-size:0.74rem;color:var(--text3);">Case Study #001</span></div>
+              <h1 style="font-family:'Syne',sans-serif;font-size:clamp(1.5rem,4vw,2.3rem);font-weight:800;color:var(--text);margin-bottom:0.75rem;line-height:1.1;">Automating Daily Reconciliation Reports.</h1>
+              <p style="font-size:0.92rem;color:var(--text2);max-width:570px;line-height:1.85;margin:0;">A manual daily task rebuilt as a fully automated pipeline — freeing up analyst time and improving report accuracy.</p>
+            </div>
+          </div>
+          <div class="cols-main">
+            <div>
+              <div class="acc-item open" data-acc="0">
+                <div class="acc-head"><span>📌 &nbsp;THE PROBLEM — A Daily Manual Bottleneck</span><span class="acc-arrow">▼</span></div>
+                <div class="acc-body" style="max-height:400px;">
+                  <div class="acc-body-inner"><p>The finance team was manually pulling transaction data from multiple sheets every morning, reformatting it, and consolidating it into a master report. The process took roughly <strong style="color:var(--text);">2–3 hours daily</strong>, was prone to copy-paste errors, and meant the report was never ready before 10am. Any mistake required starting over.</p></div>
+                </div>
+              </div>
+              <div class="acc-item open" data-acc="1">
+                <div class="acc-head"><span>⚙️ &nbsp;THE SOLUTION — Automated Apps Script Pipeline</span><span class="acc-arrow">▼</span></div>
+                <div class="acc-body" style="max-height:600px;">
+                  <div class="acc-body-inner">
+                    <p>I wrote a Google Apps Script that runs automatically at <strong style="color:var(--text);">midnight each day</strong>. It pulls data from the relevant sheets, applies the formatting logic the team was doing manually, and writes the completed report to a shared Google Sheet. By the time the team arrives in the morning, the report is done.</p>
+                    <div class="grid-2" style="margin-top:0.8rem;gap:0.8rem;">
+                      <div class="card" style="padding:1rem;"><div style="font-size:1rem;margin-bottom:0.35rem;">⏱️</div><div style="font-family:'Syne',sans-serif;font-size:0.83rem;font-weight:700;color:var(--text);margin-bottom:0.28rem;">Scheduled Trigger</div><div style="font-size:0.74rem;color:var(--text2);line-height:1.65;">Time-based trigger runs the script automatically — no manual action needed from the team.</div></div>
+                      <div class="card" style="padding:1rem;"><div style="font-size:1rem;margin-bottom:0.35rem;">✅</div><div style="font-family:'Syne',sans-serif;font-size:0.83rem;font-weight:700;color:var(--text);margin-bottom:0.28rem;">Data Validation</div><div style="font-size:0.74rem;color:var(--text2);line-height:1.65;">Basic checks flag missing or inconsistent data before the report is written, catching issues early.</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="acc-item" data-acc="2">
+                <div class="acc-head"><span>📚 &nbsp;WHAT I LEARNT</span><span class="acc-arrow">▼</span></div>
+                <div class="acc-body">
+                  <div class="acc-body-inner"><ul>
+                    <li>Time-based triggers in Apps Script are reliable for overnight jobs — much simpler than setting up cron on a server.</li>
+                    <li>The hardest part wasn't the code — it was understanding exactly what the finance team needed in the output format.</li>
+                    <li>Adding simple validation checks (missing rows, unexpected nulls) saved a lot of confusion downstream.</li>
+                    <li>Connecting the output directly to a Looker Studio dashboard meant stakeholders could see the data without opening the sheet at all.</li>
+                  </ul></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="sec-label">IMPACT AT A GLANCE</div>
+              <div class="cs-metric-card">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                  <div class="cs-metric-val">~13 hrs</div>
+                  <div class="cs-metric-badge">Every<br>working day</div>
+                </div>
+                <div class="sec-label" style="margin-top:0.25rem;">TIME SAVED DAILY</div>
+                <div class="cs-metric-track"><div class="cs-metric-fill" style="--w:90"></div></div>
+              </div>
+              <div class="cs-metric-card">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                  <div class="cs-metric-val">0</div>
+                  <div class="cs-metric-badge" style="color:var(--text3);">Fully<br>hands-free</div>
+                </div>
+                <div class="sec-label" style="margin-top:0.25rem;">MANUAL STEPS REMAINING</div>
+                <div class="cs-metric-track"><div class="cs-metric-fill" style="--w:100"></div></div>
+              </div>
+              <div class="sec-label" style="margin-top:1rem;margin-bottom:0.4rem;">REPORTING TIME — BEFORE vs AFTER</div>
+              <div class="chart-wrap" style="margin-bottom:0.5rem;"><canvas id="area-chart-canvas" height="120"></canvas></div>
+              <div style="display:flex;justify-content:space-between;font-size:0.58rem;color:var(--text3);margin-bottom:1rem;"><span>MANUAL PHASE</span><span>AFTER AUTOMATION</span></div>
+              <div class="card" style="padding:0.9rem 1.1rem;"><div class="sec-label">STACK USED</div><span class="tag">Google Apps Script</span><span class="tag">BigQuery</span><span class="tag">Google Sheets</span><span class="tag">Looker Studio</span></div>
+            </div>
+          </div>
+          <div class="page-footer">© 2024 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="#">GITHUB</a> · <a href="#">CONTACT</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────
+const PROJECTS = [
+  {id:1,icon:"📈",title:"Data Analytics Case Study: Navigating Nigeria’s Car Market",tags:["Consumer Insights","POWER BI","MICROSOFT SQL SERVER"],desc:"The Nigerian Cars Analysis Report aims to provide insights into the trends and patterns in the Nigerian car market. The report covers various aspects of the car industry, such as car models, body types, fuel types, and price ranges. Through this analysis, stakeholders can make informed decisions about their business strategies in the Nigerian car market.",status:"Q4 2023",cats:["All Projects","Fintech"],hasCS:true,impact:"Provided actionable insights for buyers, dealers, and automotive platforms"},
+  {id:2,icon:"⚖️",title:"Automated Alert Tracker — Legal & Compliance",tags:["APPS SCRIPT","GOOGLE SHEETS"],desc:"Built an automated alert tracking system to help the Legal and Compliance team manage and monitor obligations across the business. Integrated compliance data with Google Sheets using Apps Script, and implemented a customisable email alert system to notify stakeholders when obligations are due, overdue, or completed.<br><br>Also developed a weekly email digest report to provide consistent updates to stakeholders — eliminating manual copy-paste processes, improving reporting accuracy, and enhancing visibility into compliance activities.",status:"Internal",cats:["All Projects","Automations"],hasCS:false,impact:"Zero missed obligations"},
+  {id:3,icon:"⚙️",title:"Transaction Risk Analysis",tags:["SQL","BIGQUERY"],desc:"Analysed transaction patterns to identify unusual activity and risk signals using SQL and basic statistical techniques. Helped the team flag edge cases earlier in the review process.",status:"Completed",cats:["All Projects","Fintech"],hasCS:false,impact:"Improved flag accuracy"},
+  {id:4,icon:"📊",title:"Financial Data Dashboard",tags:["LOOKER STUDIO","BIGQUERY"],desc:"Built an interactive dashboard to visualise financial trends, transaction volumes, and key metrics over time. Designed for non-technical stakeholders who need a quick read on performance.",status:"Live",cats:["All Projects","Fintech"],hasCS:false,impact:"Used by 3 teams weekly"},
+  {id:5,icon:"🛠️",title:"SQL Optimisation & Cost Reduction",tags:["SQL","BIGQUERY"],desc:"Improved query performance and reduced BigQuery processing costs by refactoring joins, adding filters, and restructuring aggregations across frequently run reports.",status:"Completed",cats:["All Projects","Automations"],hasCS:false,impact:"Reduced query costs"},
+  {id:6,icon:"💱",title:"FX Reporting Automation",tags:["APPS SCRIPT","SQL"],desc:"Automated the daily collection and formatting of FX rate data into a shared reporting sheet, removing a recurring manual task and ensuring the finance team always had up-to-date figures.",status:"Production",cats:["All Projects","Automations","Fintech"],hasCS:false,impact:"Zero manual FX updates"},
+];
+const SKILLS = [
+  {name:"BIGQUERY",         level:"Advanced",    pct:88, sub:"Data warehousing, query optimisation, large-scale analysis"},
+  {name:"SQL (PostgreSQL)", level:"Advanced",    pct:90, sub:"Complex joins, window functions, aggregations, performance tuning"},
+  {name:"LOOKER STUDIO",   level:"Advanced",    pct:85, sub:"Dashboard design, data connectors, report automation"},
+  {name:"GOOGLE APPS SCRIPT",level:"Intermediate",pct:72, sub:"Automating reports, alerts, and workflows in Google Sheets"},
+  {name:"PYTHON",          level:"Intermediate", pct:65, sub:"Data analysis with Pandas, scripting, and basic automation"},
+  {name:"FIGMA / UI DESIGN",level:"Familiar",   pct:55, sub:"Dashboard prototyping and layout design for stakeholder reports"},
+];
+const FILTERS = ["All Projects","Automations","Fintech"];
+
+// ── STATE ─────────────────────────────────────
+let currentPage="overview", currentFilter="All Projects";
+let isDark=true, methodOpen=false, skillsAnimated=false, csOpen=false;
+
+// ── CURSOR ────────────────────────────────────
+const dot=document.getElementById("cursor-dot");
+const ring=document.getElementById("cursor-ring");
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;});
+(function animCursor(){
+  dot.style.left=mx+"px"; dot.style.top=my+"px";
+  rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14;
+  ring.style.left=rx+"px"; ring.style.top=ry+"px";
+  requestAnimationFrame(animCursor);
+})();
+
+// ── MOBILE SIDEBAR ────────────────────────────
+const sidebar  = document.getElementById("sidebar");
+const overlay  = document.getElementById("sidebar-overlay");
+const menuBtn  = document.getElementById("menu-btn");
+
+function openSidebar(){
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+  menuBtn.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeSidebar(){
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+  menuBtn.classList.remove("open");
+  document.body.style.overflow="";
+}
+menuBtn.addEventListener("click",()=> sidebar.classList.contains("open") ? closeSidebar() : openSidebar());
+overlay.addEventListener("click", closeSidebar);
+
+// close sidebar on nav item click (mobile)
+document.querySelectorAll(".sb-nav-item").forEach(item=>{
+  item.addEventListener("click",()=>{ if(window.innerWidth<=768) closeSidebar(); });
+});
+
+// ── PARTICLES ─────────────────────────────────
+(function initParticles(){
+  const canvas=document.getElementById("bg-canvas");
+  const ctx=canvas.getContext("2d");
+  let W,H,particles=[];
+  function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+  function create(){
+    particles=[];
+    const n=Math.floor(W*H/18000);
+    for(let i=0;i<n;i++) particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+0.3,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,a:Math.random()*.6+.2});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const rgb=isDark?"0,212,184":"0,168,150";
+    ctx.strokeStyle=isDark?"rgba(255,255,255,0.025)":"rgba(0,0,0,0.03)"; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${rgb},${p.a})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  resize(); create(); draw();
+  window.addEventListener("resize",()=>{resize();create();});
+})();
+
+// ── NAVIGATION ────────────────────────────────
+function showPage(pageId){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".sb-nav-item").forEach(n=>n.classList.remove("active"));
+  document.getElementById("page-"+pageId)?.classList.add("active");
+  document.querySelector(`[data-page="${pageId}"]`)?.classList.add("active");
+  const hints={overview:"Search insights…",projects:"Search projects…",skills:"Search tools & skills…",casestudies:"Search case studies…"};
+  document.getElementById("search-input").placeholder=hints[pageId]||"Search…";
+  currentPage=pageId;
+  if(pageId==="skills"&&!skillsAnimated){setTimeout(animateSkills,200);skillsAnimated=true;}
+  if(pageId==="overview") animateCounters();
+  if(pageId==="projects") renderProjects();
+  if(pageId==="casestudies") animateCsMetrics();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".sb-nav-item").forEach(item=>{item.addEventListener("click",()=>showPage(item.dataset.page));});
+
+// ── THEME ─────────────────────────────────────
+function setTheme(dark){
+  isDark=dark;
+  document.documentElement.setAttribute("data-theme",dark?"dark":"light");
+  document.getElementById("btn-theme-sb").textContent=dark?"☀️  Light Mode":"🌙  Dark Mode";
+  document.getElementById("btn-theme-top").textContent=dark?"🌙":"☀️";
+  if(document.getElementById("area-chart-canvas")&&csOpen) drawAreaChart();
+}
+document.getElementById("btn-theme-sb").addEventListener("click",()=>setTheme(!isDark));
+document.getElementById("btn-theme-top").addEventListener("click",()=>setTheme(!isDark));
+
+// ── METHODOLOGY ───────────────────────────────
+document.getElementById("btn-methodology").addEventListener("click",()=>{
+  methodOpen=!methodOpen;
+  document.getElementById("method-drawer").classList.toggle("open",methodOpen);
+});
+
+// ── NAV SHORTCUTS ─────────────────────────────
+document.getElementById("btn-view-proj").addEventListener("click",()=>showPage("projects"));
+document.getElementById("btn-all-proj").addEventListener("click",()=>showPage("projects"));
+document.getElementById("btn-sk-proj").addEventListener("click",()=>showPage("projects"));
+
+// ── TOAST ─────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3000);
+}
+document.getElementById("btn-dl-cv").addEventListener("click",()=>showToast("📄 Add your CV link here to enable download!"));
+
+// ── COUNTERS ──────────────────────────────────
+function animateCounters(){
+  document.querySelectorAll("[data-count]").forEach(el=>{
+    const target=parseFloat(el.dataset.count), suffix=el.dataset.suffix||"", decimal=parseInt(el.dataset.decimal)||0;
+    const dur=1400, start=performance.now();
+    (function step(now){
+      const t=Math.min((now-start)/dur,1), e=t<.5?2*t*t:-1+(4-2*t)*t;
+      el.textContent=(target*e).toFixed(decimal)+suffix;
+      if(t<1) requestAnimationFrame(step);
+    })(start);
+  });
+}
+
+// ── RECENT PROJECTS ───────────────────────────
+(function renderRecentProjects(){
+  const c=document.getElementById("recent-projects");
+  PROJECTS.slice(0,3).forEach(p=>{
+    c.innerHTML+=`<div class="mini-proj-card" onclick="showPage('projects')">
+      <div class="mini-proj-icon">${p.icon}</div>
+      <span class="tag">${p.tags[0]}</span>
+      <div class="mini-proj-title">${p.title}</div>
+      <div class="mini-proj-desc">${p.desc.slice(0,90)}…</div>
+      <div class="mini-proj-impact">${p.impact}</div>
+    </div>`;
+  });
+})();
+
+// ── PROJECTS GRID ─────────────────────────────
+function renderFilterRow(){
+  const row=document.getElementById("filter-row"); row.innerHTML="";
+  FILTERS.forEach(f=>{
+    const pill=document.createElement("button");
+    pill.className="filter-pill"+(f===currentFilter?" active":"");
+    pill.textContent=f;
+    pill.addEventListener("click",()=>{currentFilter=f;renderProjects();});
+    row.appendChild(pill);
+  });
+}
+function renderProjects(){
+  renderFilterRow();
+  const grid=document.getElementById("proj-grid"), badge=document.getElementById("proj-count");
+  const shown=PROJECTS.filter(p=>p.cats.includes(currentFilter));
+  badge.innerHTML=`SHOWING · <span class="hl">${currentFilter.toUpperCase()}</span> · ${shown.length} PROJECTS`;
+  grid.innerHTML="";
+  shown.forEach((p,i)=>{
+    const csBtn=p.hasCS?`<button class="btn btn-secondary" style="width:100%;margin-top:0.6rem;font-size:0.78rem;padding:0.45rem 1rem;" onclick="openCS()">Read Case Study →</button>`:"";
+    grid.innerHTML+=`<div class="proj-card" style="opacity:0;transform:translateY(16px);transition:opacity 0.4s ease ${i*.07}s,transform 0.4s ease ${i*.07}s;">
+      <div class="proj-thumb">${p.icon}</div>
+      <div class="proj-body">
+        <div>${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+        <div class="proj-title">${p.title}</div>
+        <div class="proj-desc">${p.desc}</div>
+        <div class="proj-foot"><span class="proj-status">${p.status}</span><span class="proj-impact">${p.impact}</span></div>
+        ${p.hasCS?`<div style="margin-top:0.5rem;"><span class="tag">Case Study Available</span></div>`:""}
+        ${csBtn}
+      </div>
+    </div>`;
+  });
+  setTimeout(()=>{grid.querySelectorAll(".proj-card").forEach(c=>{c.style.opacity="1";c.style.transform="translateY(0)";});},50);
+}
+
+// ── SKILLS ────────────────────────────────────
+(function renderSkillBars(){
+  const c=document.getElementById("skill-bars");
+  SKILLS.forEach(s=>{
+    const levelColor = s.level==="Advanced" ? "var(--accent)" : s.level==="Intermediate" ? "#6bb8f0" : "var(--text3)";
+    c.innerHTML+=`<div class="skill-row">
+      <div class="skill-head">
+        <span class="skill-name">${s.name}</span>
+        <span style="font-size:0.65rem;font-weight:700;color:${levelColor};font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:0.06em;">${s.level}</span>
+      </div>
+      <div class="skill-track"><div class="skill-fill" data-pct="${s.pct}"></div></div>
+      <div class="skill-sub">${s.sub}</div>
+    </div>`;
+  });
+})();
+function animateSkills(){
+  document.querySelectorAll(".skill-fill").forEach(el=>{el.style.width=el.dataset.pct+"%";});
+}
+function animatePerf(){
+  // panel replaced — no counter to animate
+}
+
+// ── BAR CHART ─────────────────────────────────
+function drawBarChart(){
+  const canvas=document.getElementById("bar-chart-canvas"); if(!canvas)return;
+  const ctx=canvas.getContext("2d");
+  const data=[5.2,6.1,5.8,7.4,6.9,8.42,7.8], labels=["","","Q1","","Q2","Q3",""];
+  const accent="#00d4b8", muted=isDark?"rgba(255,255,255,0.15)":"rgba(0,0,0,0.15)";
+  const txtC=isDark?"rgba(255,255,255,0.35)":"rgba(0,0,0,0.35)", gridC=isDark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.05)";
+  canvas.width=canvas.parentElement.clientWidth;
+  const W=canvas.width, H=canvas.height; ctx.clearRect(0,0,W,H);
+  const pad={l:10,r:10,t:10,b:28}, cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+  const barW=(cW/data.length)*.55, max=Math.max(...data)*1.1;
+  [.25,.5,.75,1].forEach(f=>{const y=pad.t+cH*(1-f);ctx.strokeStyle=gridC;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();});
+  data.forEach((v,i)=>{
+    const hi=i>=data.length-2, x=pad.l+(i+.5)*(cW/data.length)-barW/2, bH=(v/max)*cH, y=pad.t+cH-bH, r=4;
+    ctx.fillStyle=hi?accent:muted; ctx.globalAlpha=hi?1:.4;
+    ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+barW-r,y); ctx.arcTo(x+barW,y,x+barW,y+r,r); ctx.lineTo(x+barW,y+bH); ctx.lineTo(x,y+bH); ctx.arcTo(x,y,x+r,y,r); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1;
+    if(labels[i]){ctx.fillStyle=txtC;ctx.font="9px DM Sans";ctx.textAlign="center";ctx.fillText(labels[i],x+barW/2,H-8);}
+  });
+}
+
+// ── AREA CHART ────────────────────────────────
+function drawAreaChart(){
+  const canvas=document.getElementById("area-chart-canvas"); if(!canvas)return;
+  const ctx=canvas.getContext("2d");
+  const data=[14,13.2,11.5,8.8,4.2,0.13], labels=["M1","M2","M3","M4","M5","M6"];
+  const accent="#00d4b8", gridC=isDark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.05)", txtC=isDark?"rgba(255,255,255,0.35)":"rgba(0,0,0,0.35)";
+  canvas.width=canvas.parentElement.clientWidth;
+  const W=canvas.width, H=canvas.height; ctx.clearRect(0,0,W,H);
+  const pad={l:10,r:10,t:8,b:24}, cW=W-pad.l-pad.r, cH=H-pad.t-pad.b, max=Math.max(...data)*1.1, step=cW/(data.length-1);
+  const pts=data.map((v,i)=>({x:pad.l+i*step,y:pad.t+cH*(1-v/max)}));
+  [.33,.66,1].forEach(f=>{const y=pad.t+cH*(1-f);ctx.strokeStyle=gridC;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();});
+  const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+cH); grad.addColorStop(0,"rgba(0,212,184,0.22)"); grad.addColorStop(1,"rgba(0,212,184,0.02)");
+  ctx.beginPath(); ctx.moveTo(pts[0].x,pad.t+cH); pts.forEach(p=>ctx.lineTo(p.x,p.y)); ctx.lineTo(pts[pts.length-1].x,pad.t+cH); ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+  ctx.beginPath(); pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y)); ctx.strokeStyle=accent; ctx.lineWidth=2; ctx.lineJoin="round"; ctx.stroke();
+  pts.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle=accent;ctx.fill();ctx.fillStyle=txtC;ctx.font="9px DM Sans";ctx.textAlign="center";ctx.fillText(labels[i],p.x,H-6);});
+}
+
+// ── CASE STUDY ────────────────────────────────
+function openCS(){
+  csOpen=true;
+  document.getElementById("cs-list").classList.add("hidden");
+  document.getElementById("cs-detail").classList.add("active");
+  showPage("casestudies");
+  document.getElementById("cs-list").classList.add("hidden");
+  document.getElementById("cs-detail").classList.add("active");
+  setTimeout(()=>{animateCsMetrics();drawAreaChart();},200);
+}
+document.getElementById("btn-open-cs").addEventListener("click",openCS);
+document.getElementById("btn-back-cs").addEventListener("click",()=>{csOpen=false;document.getElementById("cs-list").classList.remove("hidden");document.getElementById("cs-detail").classList.remove("active");});
+function animateCsMetrics(){
+  document.querySelectorAll(".cs-metric-fill").forEach(el=>{
+    const w=el.style.getPropertyValue("--w")||el.getAttribute("style").match(/--w:([\d.]+)/)?.[1]||0;
+    setTimeout(()=>{el.style.width=w+"%";},300);
+  });
+}
+
+// ── ACCORDION ─────────────────────────────────
+document.querySelectorAll(".acc-head").forEach(head=>{
+  head.addEventListener("click",()=>{
+    const item=head.parentElement, body=item.querySelector(".acc-body"), isOpen=item.classList.contains("open");
+    item.classList.toggle("open",!isOpen);
+    body.style.maxHeight=isOpen?"0":body.querySelector(".acc-body-inner").scrollHeight+40+"px";
+  });
+});
+
+// ── SEARCH ────────────────────────────────────
+document.getElementById("search-input").addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase();
+  if(currentPage==="projects") document.querySelectorAll(".proj-card").forEach(c=>{c.style.display=c.textContent.toLowerCase().includes(q)?"":"none";});
+});
+
+// ── RESIZE CHARTS ─────────────────────────────
+window.addEventListener("resize",()=>{
+  if(currentPage==="casestudies"&&csOpen) drawAreaChart();
+});
+
+// ── INIT ──────────────────────────────────────
+showPage("overview");
+animateCounters();
+</script>
+</body>
+</html>
