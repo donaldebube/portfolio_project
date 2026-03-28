@@ -235,6 +235,46 @@ body::before{
   letter-spacing:.06em;
   margin-top:.8rem
 }
+.drawer-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.75rem;
+  margin-bottom:1.2rem;
+}
+
+.drawer-metric{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.85rem .9rem;
+}
+
+.drawer-metric-label{
+  font-size:.58rem;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:.28rem;
+}
+
+.drawer-metric-value{
+  font-size:.8rem;
+  color:var(--text);
+  font-weight:600;
+  line-height:1.4;
+}
+
+.drawer-copy{
+  font-size:.86rem;
+  color:var(--text2);
+  line-height:1.85;
+}
+
+@media(max-width:480px){
+  .drawer-metrics{
+    grid-template-columns:1fr;
+  }
+}
 
 /* ── MAIN ── */
 #main{
@@ -743,19 +783,32 @@ body::before{
     </div>
     <button id="proj-drawer-close" aria-label="Close">✕</button>
   </div>
-  <div id="proj-drawer-body">
-    <span id="drawer-icon" class="drawer-icon"></span>
-    <span class="drawer-section-label" style="margin-top:0;">OVERVIEW</span>
-    <div id="drawer-desc" class="drawer-desc"></div>
-    <div id="drawer-impact-box" class="drawer-impact-box" style="display:none;">
-      <div>
-        <div class="drawer-impact-lbl">Key Impact</div>
-        <div id="drawer-impact-val" class="drawer-impact-val"></div>
-      </div>
+<div id="proj-drawer-body">
+  <span id="drawer-icon" class="drawer-icon"></span>
+
+  <div id="drawer-metrics" class="drawer-metrics"></div>
+
+  <span class="drawer-section-label" style="margin-top:0;">OVERVIEW</span>
+  <div id="drawer-desc" class="drawer-desc"></div>
+
+  <span class="drawer-section-label">THE PROBLEM</span>
+  <div id="drawer-problem" class="drawer-copy"></div>
+
+  <span class="drawer-section-label">MY APPROACH</span>
+  <div id="drawer-approach" class="drawer-copy"></div>
+
+  <span class="drawer-section-label">OUTCOME</span>
+  <div id="drawer-outcome" class="drawer-copy"></div>
+
+  <div id="drawer-impact-box" class="drawer-impact-box" style="display:none;">
+    <div>
+      <div class="drawer-impact-lbl">Key Impact</div>
+      <div id="drawer-impact-val" class="drawer-impact-val"></div>
     </div>
-    <span class="drawer-section-label">STACK</span>
-    <div id="drawer-stack" style="margin-top:.2rem;"></div>
   </div>
+
+  <span class="drawer-section-label">TOOLS USED</span>
+  <div id="drawer-stack" style="margin-top:.2rem;"></div>
 </div>
 
 <div id="app">
@@ -788,12 +841,8 @@ body::before{
 
   <div id="main">
     <div id="topbar">
-      <button id="menu-btn" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
-
+      <button id="menu-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
       <div style="flex:1"></div>
-
       <button class="top-toggle" id="btn-theme-top">🌙</button>
     </div>
 
@@ -961,9 +1010,17 @@ const PROJECTS = [
     github:"https://github.com/donaldebube/Nigeria-Cars-Dataset-Case-Study-with-Python/wiki/Navigating-Nigeria's-Car-Market:-A-Data-Driven-Analysis",
     tags:["POWER BI","MICROSOFT SQL SERVER"],
     shortDesc:"An analytical deep-dive into the Nigerian car market — covering car models, body types, fuel types, and price ranges to help buyers, dealers, and platforms make informed decisions.",
-    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria's automotive industry by analyzing factors such as car models, body types, fuel types, vehicle condition (brand new, foreign used, and Nigerian used), and pricing. The study aims to help stakeholders—including dealers, importers, and investors—make informed decisions by identifying key patterns such as the dominance of foreign used vehicles, the popularity of SUVs and sedans, the strong market presence of brands like Toyota and Honda, and the significant influence of affordability on purchasing behavior. Through structured data cleaning, analysis, and visualization using tools like SQL and Excel, the project uncovers actionable insights on market distribution, pricing dynamics, and demand trends, ultimately enabling better strategic planning and opportunity identification within the Nigerian car market.</p>`,
     cats:["All Projects","Fintech"],
-    impact:"Actionable insights for buyers, dealers & platforms"
+    impact:"Actionable insights for buyers, dealers & platforms",
+    problem:"The Nigerian car market is highly fragmented, with buyers and sellers often lacking clear visibility into vehicle type distribution, pricing trends, and demand patterns.",
+    approach:"I cleaned and explored the dataset, segmented vehicles by condition, body type, brand, and fuel type, then built visual analysis to uncover market patterns and pricing behavior.",
+    outcome:"The analysis highlighted dominant brands, the strong presence of foreign used vehicles, and how affordability shapes market demand.",
+    fullDesc:"A data-driven overview of trends and consumer behavior within Nigeria's automotive industry.",
+    metrics:[
+      {label:"Market Focus", value:"Pricing & demand"},
+      {label:"Primary Lens", value:"Buyer behavior"},
+      {label:"Output", value:"Decision-ready insights"}
+    ]
   },
   {
     id:2,
@@ -971,48 +1028,75 @@ const PROJECTS = [
     title:"Automated Alert Tracker — Legal & Compliance",
     github:"https://github.com/yourusername/alert-tracker",
     tags:["APPS SCRIPT","GOOGLE SHEETS"],
-    shortDesc:"An automated alert tracking system...",
-    fullDesc:`<p>...</p>`,
+    shortDesc:"An automated alert tracking system for legal and compliance operations.",
     cats:["All Projects","Automations"],
-    impact:"Zero missed obligations"
+    impact:"Zero missed obligations",
+    problem:"Compliance follow-ups and legal action points were easy to miss when tracked manually across sheets and emails.",
+    approach:"I designed an automated tracker with structured workflows, reminders, and simplified monitoring in Google Sheets using Apps Script.",
+    outcome:"The tool reduced manual oversight risk and gave the team a more reliable way to stay ahead of deadlines.",
+    fullDesc:"A lightweight internal workflow system built to improve compliance tracking and execution.",
+    metrics:[
+      {label:"Primary Goal", value:"Risk reduction"},
+      {label:"System Type", value:"Internal automation"},
+      {label:"Value", value:"Operational control"}
+    ]
   },
   {
     id:3,
     icon:"🦠",
     title:"Pandemic Response in Africa: A COVID-19 Data Analysis Case Study",
     github:"https://github.com/donaldebube/Covid19-Report-Africa/wiki/Covid-19-Case-Study-%E2%80%93-Africa-Edition",
-    tags:["MICROSOFT SQL SERVER", "POWER BI"],
-    shortDesc:"This case study explores which African countries managed the pandemic well and which struggled, to highlight gaps in resources and preparedness.",
-    fullDesc:`<p>This COVID-19 Africa-focused analysis explores how countries across the continent responded to the pandemic caused by SARS-CoV-2, using global datasets to evaluate performance and outcomes. The project aims to assess whether African nations handled the outbreak efficiently by analyzing key indicators such as case trends, recovery rates, and overall impact, while comparing performance across countries. By identifying which countries managed the crisis effectively and which struggled, the study highlights disparities in resources, preparedness, and response strategies, providing valuable insights into areas where healthcare systems and policy interventions can be strengthened.</p>`,
+    tags:["MICROSOFT SQL SERVER","POWER BI"],
+    shortDesc:"This case study explores which African countries managed the pandemic well and which struggled.",
     cats:["All Projects","Fintech"],
-    impact:"Exposed performance gaps across African countries"
+    impact:"Exposed performance gaps across African countries",
+    problem:"There was a need to understand how African countries responded differently to COVID-19 and where resource or preparedness gaps were most visible.",
+    approach:"I analyzed country-level pandemic data, compared trends in outcomes, and visualized performance differences across African nations.",
+    outcome:"The work surfaced clear disparities in outcomes and helped frame where interventions and support were most needed.",
+    fullDesc:"An Africa-focused analysis of country-level pandemic response patterns.",
+    metrics:[
+      {label:"Scope", value:"Africa-wide"},
+      {label:"Focus", value:"Response comparison"},
+      {label:"Insight Type", value:"Policy & health gaps"}
+    ]
   },
   {
     id:4,
     icon:"📊",
     title:"Airbnb Case Study: Insights for Real Estate Growth and Optimization",
     github:"https://www.kaggle.com/code/donaldebube/airbnb-case-study-for-real-estate-zone",
-    tags:["Tableau","microsoft excel"],
-    shortDesc:"This project analyzes Airbnb data in Canada to help Real Estate Zone evaluate the profitability of entering the short-term rental market. The analysis identifies high-performing locations, pricing trends, and key factors that influence revenue, enabling data-driven decisions for business expansion.",
-    fullDesc:`<p>The Airbnb Market Analysis for Real Estate Zone is a data-driven project designed to support the company's planned expansion from Nigeria into the Canadian real estate market. With a strategic focus on entering the short-term rental (Airbnb) sector, the project aims to determine whether this venture would be profitable and to identify the most lucrative locations for investment.</p>
-<p>Using Airbnb listing data across Canada, the analysis explores key variables such as location, pricing, property types, availability, and occupancy-related indicators. The goal is to uncover patterns that drive revenue and highlight cities or neighborhoods with the highest earning potential.</p>
-<p>The project answers critical business questions, including which regions in Canada generate the most Airbnb income, what types of properties perform best, and how pricing strategies vary across locations. It also evaluates market competitiveness and demand trends to guide investment decisions.</p>
-<p>Through data cleaning, exploration, and visualization using tools such as SQL and Excel (or BI tools), the project delivers actionable insights that help the CEO understand market opportunities, minimize risk, and make informed expansion decisions. Ultimately, this analysis positions Real Estate Zone to strategically enter the Canadian Airbnb market with a clear, evidence-based approach to profitability and growth.</p>`,
+    tags:["TABLEAU","MICROSOFT EXCEL"],
+    shortDesc:"This project analyzes Airbnb data in Canada to help Real Estate Zone evaluate expansion opportunities.",
     cats:["All Projects","Fintech"],
-    impact:"Identified the most profitable Airbnb markets in Canada to guide high-impact, data-driven expansion decisions."
+    impact:"Identified the most profitable Airbnb markets in Canada",
+    problem:"The business needed evidence on whether expanding into Canada’s short-term rental market would be profitable and where to focus first.",
+    approach:"I analyzed Airbnb listing and pricing patterns across Canada to identify high-performing locations, property types, and revenue drivers.",
+    outcome:"The study provided a clearer view of attractive markets and supported smarter expansion planning.",
+    fullDesc:"A market analysis project designed to support strategic real estate expansion.",
+    metrics:[
+      {label:"Geography", value:"Canada"},
+      {label:"Business Use", value:"Expansion planning"},
+      {label:"Core Output", value:"Profitability insight"}
+    ]
   },
   {
     id:5,
     icon:"🧠",
     title:"Substance Use & Recovery: A Data Analysis Case Study",
     github:"https://github.com/donaldebube/Health-Substance-Abuse-Analysis/wiki/SUBSTANCE-ABUSE-ANALYSIS---Enterprise-DNA",
-    tags:["BIGQUERY", "POWER BI"],
-    shortDesc:"This project analyzes substance abuse data to identify the most commonly used substances, evaluate recovery trends, and uncover insights that can support more effective treatment strategies and improve patient outcomes.",
-    fullDesc:`<p>The Substance Abuse Analysis project explores patterns and impacts of harmful substance use by analyzing patient-level data related to the consumption of psychoactive substances, including alcohol and illicit drugs. The study focuses on understanding the prevalence of different substances, their effects on recovery outcomes, and the broader implications on health and society.</p>
-<p>Using the dataset, the analysis identifies the most frequently consumed substances among patients, examines recovery rates, and evaluates factors that may influence successful rehabilitation. The goal is to uncover actionable insights that can inform healthcare providers, policymakers, and support organizations on how to better design intervention strategies and allocate resources effectively.</p>
-<p>Through data cleaning, exploration, and analysis using tools such as SQL and Excel or visualization platforms, the project highlights trends in substance usage and recovery performance. Ultimately, the findings provide a data-driven foundation for improving treatment approaches, enhancing patient recovery rates, and reducing the long-term social and economic burden of substance abuse.</p>`,
+    tags:["BIGQUERY","POWER BI"],
+    shortDesc:"This project analyzes substance abuse data to uncover usage and recovery patterns.",
     cats:["All Projects","Automations"],
-    impact:"Uncovered key substance use patterns and recovery insights to support more effective, data-driven treatment strategies."
+    impact:"Uncovered key recovery and substance use insights",
+    problem:"Healthcare and support stakeholders needed clearer insight into substance usage patterns and recovery outcomes.",
+    approach:"I explored patient-level data to identify commonly used substances, measure recovery trends, and highlight patterns that could inform treatment strategy.",
+    outcome:"The analysis created a stronger evidence base for intervention planning and patient support decisions.",
+    fullDesc:"A healthcare-focused analytics case study around substance abuse and recovery.",
+    metrics:[
+      {label:"Domain", value:"Healthcare analytics"},
+      {label:"Focus", value:"Recovery outcomes"},
+      {label:"Use Case", value:"Treatment planning"}
+    ]
   },
   {
     id:6,
@@ -1020,10 +1104,18 @@ const PROJECTS = [
     title:"FX Reporting Automation",
     github:"https://github.com/yourusername/fx-automation",
     tags:["APPS SCRIPT","SQL"],
-    shortDesc:"Automated FX reporting...",
-    fullDesc:`<p>...</p>`,
+    shortDesc:"Automated FX reporting workflow for faster, more reliable updates.",
     cats:["All Projects","Automations","Fintech"],
-    impact:"Zero manual FX updates"
+    impact:"Zero manual FX updates",
+    problem:"FX reporting was repetitive, manual, and vulnerable to delays and inconsistencies.",
+    approach:"I automated the reporting logic and update workflow using SQL and Apps Script so outputs could be generated with less manual effort.",
+    outcome:"The process became faster, cleaner, and more dependable for business reporting.",
+    fullDesc:"An automation project focused on reducing manual reporting friction.",
+    metrics:[
+      {label:"Process", value:"Reporting automation"},
+      {label:"Benefit", value:"Speed & consistency"},
+      {label:"Manual Work", value:"Reduced"}
+    ]
   }
 ];
 
@@ -1240,7 +1332,7 @@ function animateCounters(){
       <span class="tag">${p.tags[0]}</span>
       <div class="mini-proj-title">${p.title}</div>
       <div class="mini-proj-desc">${p.shortDesc.slice(0,90)}…</div>
-      <div class="mini-proj-impact">${p.impact}</div>`;
+      <div class="mini-proj-impact">View case study ↗</div>`;
     el.addEventListener("click", () => {
       showPage("projects");
       setTimeout(() => openDrawer(p.id), 150);
@@ -1288,7 +1380,7 @@ function renderProjects(){
         <div class="proj-foot">
           <span class="proj-impact">↗ ${p.impact}</span>
         </div>
-        <button class="proj-view-btn">Read Full Description ↗</button>
+       <button class="proj-view-btn">Open Case Study ↗</button>
         ${p.github ? `
           <a href="${p.github}" target="_blank" class="proj-view-btn" style="margin-top:.5rem;">
             💻 View on GitHub
@@ -1321,38 +1413,51 @@ const drawer=document.getElementById("proj-drawer");
 const drawerClose=document.getElementById("proj-drawer-close");
 
 function openDrawer(projId){
-  const p=PROJECTS.find(x=>x.id===projId);
+  const p = PROJECTS.find(x => x.id === projId);
   if(!p) return;
 
-  document.getElementById("drawer-icon").textContent=p.icon;
-  document.getElementById("drawer-title-top").textContent=p.title;
-  document.getElementById("drawer-tags-top").innerHTML=p.tags.map(t=>`<span class="tag">${t}</span>`).join("");
-  document.getElementById("drawer-desc").innerHTML=p.fullDesc;
+  document.getElementById("drawer-icon").textContent = p.icon;
+  document.getElementById("drawer-title-top").textContent = p.title;
+  document.getElementById("drawer-tags-top").innerHTML =
+    p.tags.map(t => `<span class="tag">${t}</span>`).join("");
 
-  let githubBtn="";
+  document.getElementById("drawer-desc").innerHTML = `<p>${p.fullDesc || ""}</p>`;
+  document.getElementById("drawer-problem").textContent = p.problem || "";
+  document.getElementById("drawer-approach").textContent = p.approach || "";
+  document.getElementById("drawer-outcome").textContent = p.outcome || "";
+
+  const metricsWrap = document.getElementById("drawer-metrics");
+  metricsWrap.innerHTML = (p.metrics || []).map(m => `
+    <div class="drawer-metric">
+      <div class="drawer-metric-label">${m.label}</div>
+      <div class="drawer-metric-value">${m.value}</div>
+    </div>
+  `).join("");
+
+  let githubBtn = "";
   if(p.github){
-    githubBtn=`
+    githubBtn = `
       <a href="${p.github}" target="_blank" class="proj-view-btn" style="margin-top:1rem;display:inline-flex;">
-        💻 View Full Code on GitHub
+        💻 View Full Project
       </a>
     `;
   }
 
   document.getElementById("drawer-stack").innerHTML =
-    p.tags.map(t=>`<span class="tag">${t}</span>`).join("") + githubBtn;
+    p.tags.map(t => `<span class="tag">${t}</span>`).join("") + githubBtn;
 
-  const impactBox=document.getElementById("drawer-impact-box");
+  const impactBox = document.getElementById("drawer-impact-box");
   if(p.impact){
-    document.getElementById("drawer-impact-val").textContent=p.impact;
-    impactBox.style.display="flex";
+    document.getElementById("drawer-impact-val").textContent = p.impact;
+    impactBox.style.display = "flex";
   } else {
-    impactBox.style.display="none";
+    impactBox.style.display = "none";
   }
 
   drawerOverlay.classList.add("open");
   drawer.classList.add("open");
-  document.body.style.overflow="hidden";
-  document.getElementById("proj-drawer-body").scrollTop=0;
+  document.body.style.overflow = "hidden";
+  document.getElementById("proj-drawer-body").scrollTop = 0;
 }
 
 function closeDrawer(){
