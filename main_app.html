@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Donald Ebube · Data Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
 <style>
 :root {
   --bg:      #090d12; --bg2:#0d1520; --card:#111b27; --card2:#16202e;
@@ -52,7 +52,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 #sidebar{width:var(--nav-w);min-height:100vh;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:background .3s var(--ease),transform .35s var(--ease);overflow:hidden}
 #sidebar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,rgba(0,212,184,.04),transparent);pointer-events:none}
 .sb-brand{padding:1.7rem 1.5rem 1rem;border-bottom:1px solid var(--border)}
-.sb-brand-name{font-family:'Syne',sans-serif;font-size:.96rem;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.sb-brand-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.96rem;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
 .sb-brand-sub{font-size:.68rem;color:#6b7f94;margin-top:.22rem}
 .sb-nav{flex:1;padding:.6rem 0;overflow-y:auto}
 .sb-nav-item{display:flex;align-items:center;gap:.7rem;padding:.72rem 1.5rem;font-size:.86rem;font-weight:500;color:#7a8fa8;border-left:3px solid transparent;transition:all .2s ease;cursor:none;white-space:nowrap;position:relative;overflow:hidden}
@@ -102,12 +102,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 
 /* ── TYPOGRAPHY ── */
 .hero-top{width:100%;margin-bottom:2rem}
-.hero-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem}
-.hero-title{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;color:var(--text);line-height:1.04;margin-bottom:0;width:100%}
+.hero-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem}
+.hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;color:var(--text);line-height:1.08;margin-bottom:0;width:100%;letter-spacing:-.03em}
 .hero-title .accent{color:var(--accent)}
-.page-title{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;color:var(--text);line-height:1.05;margin-bottom:.45rem}
+.page-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(1.9rem,4vw,2.7rem);font-weight:800;color:var(--text);line-height:1.1;margin-bottom:.45rem;letter-spacing:-.02em}
 .page-title .accent{color:var(--accent)}
-.section-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:.3rem;letter-spacing:-.01em}
 .page-subtitle{font-size:.9rem;color:var(--text2);max-width:520px;line-height:1.85;margin-bottom:1.6rem}
 .sec-label{font-size:.61rem;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;font-weight:600;margin-bottom:.45rem}
 
@@ -137,7 +137,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
 .cols-hero{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;align-items:start}
-.cols-skill{display:grid;grid-template-columns:1.15fr 1fr;gap:2rem;align-items:start}
+.cols-skill{display:grid;grid-template-columns:1.15fr 1fr;gap:2rem;align-items:stretch}
 .divider{height:1px;background:var(--border);margin:1.8rem 0}
 
 /* ── ANIMATIONS ── */
@@ -161,16 +161,16 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 .method-drawer{margin-top:1.1rem;background:var(--card2);border:1px solid var(--bacc);border-radius:14px;padding:0 1.4rem;overflow:hidden;max-height:0;opacity:0;transition:max-height .5s var(--ease),opacity .3s,padding .3s}
 .method-drawer.open{max-height:600px;opacity:1;padding:1.4rem}
 .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.5rem}
-.method-item-title{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+.method-item-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem}
 .method-item-desc{font-size:.77rem;color:var(--text2);line-height:1.7}
 .tenure-card{position:relative;overflow:hidden}
 .tenure-card::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:var(--adim);pointer-events:none}
-.tenure-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--text);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.tenure-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:700;color:var(--text);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.15rem;text-align:center;transition:all .25s;position:relative;overflow:hidden}
 .stat-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--adim),transparent);opacity:0;transition:opacity .3s}
 .stat-card:hover{border-color:var(--bacc);transform:translateY(-2px)}
 .stat-card:hover::after{opacity:1}
-.stat-val{font-family:'Syne',sans-serif;font-size:1.85rem;font-weight:800;color:var(--accent);line-height:1;display:block}
+.stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.85rem;font-weight:700;color:var(--accent);line-height:1;display:block}
 .stat-lbl{font-size:.64rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;display:block}
 .live-badge{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.17rem .55rem;font-size:.6rem;color:var(--accent);font-weight:700;letter-spacing:.08em}
 .tool-pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:.38rem .85rem;font-size:.78rem;font-weight:500;color:var(--text2);font-family:'DM Sans',sans-serif;transition:all .2s ease;cursor:default}
@@ -182,7 +182,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 .mini-proj-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;transition:all .25s;cursor:none}
 .mini-proj-card:hover{border-color:var(--bacc);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,212,184,.08)}
 .mini-proj-icon{font-size:1.9rem;margin-bottom:.55rem}
-.mini-proj-title{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.mini-proj-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
 .mini-proj-desc{font-size:.76rem;color:var(--text2);line-height:1.65;margin-bottom:.6rem}
 .mini-proj-impact{font-size:.7rem;color:var(--accent);font-weight:600}
 
@@ -192,7 +192,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 .proj-thumb{height:120px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:2.9rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
 .proj-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,var(--adim))}
 .proj-body{padding:1.15rem}
-.proj-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.35rem;margin-top:.5rem;line-height:1.3}
+.proj-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:.35rem;margin-top:.5rem;line-height:1.3}
 .proj-desc-short{font-size:.79rem;color:var(--text2);line-height:1.7;margin-bottom:.75rem;
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .proj-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:.6rem;margin-top:.6rem}
@@ -200,10 +200,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   font-size:.7rem;
   color:var(--accent);
   font-weight:700;
-
-  white-space: pre-line;   /* allows \n */
-  word-break: break-word;  /* forces long text to wrap */
-  overflow-wrap: anywhere; /* prevents overflow */
+  white-space: pre-line;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   line-height: 1.4;
 }
 
@@ -270,8 +269,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 
 .drawer-icon{ font-size:3rem; margin-bottom:1rem; display:block; }
 .drawer-title{
-  font-family:'Syne',sans-serif; font-size:1.45rem; font-weight:800;
-  color:var(--text); line-height:1.2; margin-bottom:.9rem;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:1.45rem; font-weight:800;
+  color:var(--text); line-height:1.2; margin-bottom:.9rem; letter-spacing:-.02em;
 }
 .drawer-tags{ margin-bottom:1.2rem; }
 .drawer-section-label{
@@ -290,13 +289,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   display:flex; align-items:center; gap:.8rem;
 }
 .drawer-impact-val{
-  font-family:'Syne',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:1.1rem;
-  font-weight:800;
+  font-weight:700;
   color:var(--accent);
-
-  white-space: pre-line;   /* 👈 allows line breaks */
-  word-break: break-word;  /* 👈 prevents overflow */
+  white-space: pre-line;
+  word-break: break-word;
   overflow-wrap: anywhere;
   line-height: 1.4;
 }
@@ -305,13 +303,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 /* ── SKILLS ── */
 .skill-row{margin-bottom:1.4rem}
 .skill-head{display:flex;justify-content:space-between;margin-bottom:.28rem}
-.skill-name{font-family:'Syne',sans-serif;font-size:.79rem;font-weight:700;color:var(--text);letter-spacing:.04em}
+.skill-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.79rem;font-weight:600;color:var(--text);letter-spacing:.02em}
 .skill-track{height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-bottom:.28rem}
 .skill-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(0,212,184,.5),var(--accent));width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
 .skill-sub{font-size:.61rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
 .mini-metric{flex:1;background:var(--card2);border-radius:10px;padding:.75rem}
 .mini-metric-lbl{font-size:.61rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.18rem}
-.mini-metric-val{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:var(--text)}
+.mini-metric-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.35rem;font-weight:700;color:var(--text)}
 
 /* ── FOOTER ── */
 .page-footer{text-align:center;padding:2rem 0 .5rem;border-top:1px solid var(--border);margin-top:3rem;font-size:.64rem;color:var(--text3);letter-spacing:.06em}
@@ -421,7 +419,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   <div id="proj-drawer-header">
     <div style="flex:1">
       <div id="drawer-tags-top" style="margin-bottom:.5rem;"></div>
-      <div id="drawer-title-top" style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.3;"></div>
+      <div id="drawer-title-top" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);line-height:1.3;"></div>
     </div>
     <button id="proj-drawer-close" aria-label="Close">✕</button>
   </div>
@@ -520,10 +518,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
             <div class="tenure-num">3 Years 📊</div>
             <div style="height:1px;background:var(--border);margin:.7rem 0;"></div>
             <div style="display:flex;flex-direction:column;gap:.8rem;">
-              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">📈</span><div><div style="font-family:'Syne',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Fintech Analytics</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Transaction monitoring, revenue tracking, and performance reporting.</div></div></div>
-              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">⚙️</span><div><div style="font-family:'Syne',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Automation &amp; Workflows</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Reducing manual reporting using SQL, BigQuery, and Google Apps Script.</div></div></div>
-              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">🎨</span><div><div style="font-family:'Syne',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Dashboard Design</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Clear, practical dashboards in Looker Studio with a UX/UI background.</div></div></div>
-              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">🎓</span><div><div style="font-family:'Syne',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Certifications</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Google Data Analytics · Google BI · Google Cloud Data Analytics · DBT Bootcamp</div></div></div>
+              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">📈</span><div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Fintech Analytics</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Transaction monitoring, revenue tracking, and performance reporting.</div></div></div>
+              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">⚙️</span><div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Automation &amp; Workflows</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Reducing manual reporting using SQL, BigQuery, and Google Apps Script.</div></div></div>
+              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">🎨</span><div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Dashboard Design</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Clear, practical dashboards in Looker Studio with a UX/UI background.</div></div></div>
+              <div style="display:flex;gap:.75rem;align-items:flex-start;"><span style="font-size:1rem;margin-top:1px;">🎓</span><div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.12rem;">Certifications</div><div style="font-size:.73rem;color:var(--text3);line-height:1.55;">Google Data Analytics · Google BI · Google Cloud Data Analytics · DBT Bootcamp</div></div></div>
             </div>
           </div>
         </div>
@@ -555,7 +553,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 
         <div class="grid-3 stagger" style="margin-bottom:2.5rem;">
           <div class="card">
-            <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="font-size:1.2rem;">🗄️</span><div style="font-family:'Syne',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">Data Warehouses</div></div>
+            <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="font-size:1.2rem;">🗄️</span><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">Data Warehouses</div></div>
             <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem;">
               <div class="data-row"><span style="font-size:.82rem;color:var(--text);">BigQuery</span><span style="font-size:.68rem;color:var(--accent);font-weight:700;">Primary</span></div>
               <div class="data-row"><span style="font-size:.82rem;color:var(--text);">Microsoft SQL Server</span><span style="font-size:.68rem;color:var(--text3);font-weight:600;">Familiar</span></div>
@@ -564,7 +562,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
             <div style="font-size:.79rem;color:var(--text2);line-height:1.75;">Writing complex SQL queries, optimising for performance, and managing large datasets across cloud and on-premise warehouses.</div>
           </div>
           <div class="card">
-            <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="font-size:1.2rem;">📊</span><div style="font-family:'Syne',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">Dashboards &amp; Reporting</div></div>
+            <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="font-size:1.2rem;">📊</span><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">Dashboards &amp; Reporting</div></div>
             <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem;">
               <div class="data-row"><span style="font-size:.82rem;color:var(--text);">Looker Studio</span><span style="font-size:.68rem;color:var(--accent);font-weight:700;">Primary</span></div>
               <div class="data-row"><span style="font-size:.82rem;color:var(--text);">Microsoft Power BI</span><span style="font-size:.68rem;color:var(--text3);font-weight:600;">Familiar</span></div>
@@ -573,7 +571,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
             <div style="font-size:.79rem;color:var(--text2);line-height:1.75;">Designing clear, focused dashboards that give teams a reliable view of KPIs, trends, and performance — built with UX in mind.</div>
           </div>
           <div class="card">
-            <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="font-size:1.2rem;">⚙️</span><div style="font-family:'Syne',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">Automation &amp; Internal Tools</div></div>
+            <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;"><span style="font-size:1.2rem;">⚙️</span><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">Automation &amp; Internal Tools</div></div>
             <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem;">
               <div class="data-row"><span style="font-size:.82rem;color:var(--text);">Google Apps Script</span><span style="font-size:.68rem;color:var(--accent);font-weight:700;">Active</span></div>
               <div class="data-row"><span style="font-size:.82rem;color:var(--text);">Python &amp; Streamlit</span><span style="font-size:.68rem;color:var(--text3);font-weight:600;">Familiar</span></div>
@@ -583,7 +581,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
           </div>
         </div>
 
-        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:1.1rem;">Recent Projects</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:1.1rem;">Recent Projects</div>
         <div class="grid-3 stagger" id="recent-projects" style="margin-bottom:1.5rem;"></div>
         <div style="text-align:center;"><button class="btn btn-secondary" id="btn-all-proj">View All Projects →</button></div>
         <div class="page-footer">© 2026 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="https://github.com/donaldebube" target="_blank">GITHUB</a> · <a href="#">CONTACT</a></div>
@@ -605,15 +603,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
         <div style="width:40px;height:3px;background:var(--accent);border-radius:99px;margin-bottom:.75rem;"></div>
         <p class="page-subtitle">A practical toolkit built around SQL, data analysis, and reporting automation.</p>
         <div class="cols-skill">
-          <div class="card">
+          <div class="card" style="height:100%;display:flex;flex-direction:column;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;">
-              <div style="font-family:'Syne',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">📊 Core Tool Stack</div>
+              <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.93rem;font-weight:700;color:var(--text);">📊 Core Tool Stack</div>
               <span style="font-size:.88rem;color:var(--text3);font-family:monospace;">&gt;_</span>
             </div>
             <div id="skill-bars"></div>
           </div>
-          <div>
-            <div class="card accent-border" style="margin-bottom:1.2rem;">
+          <div style="display:flex;flex-direction:column;height:100%;">
+            <div class="card accent-border" style="margin-bottom:1.2rem;flex:1;display:flex;flex-direction:column;">
               <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem;flex-wrap:wrap;">
                 <div class="avail-dot" style="width:7px;height:7px;"></div>
                 <div class="sec-label" style="margin:0;">SAMPLE DASHBOARD KPIS</div>
@@ -636,9 +634,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
         </div>
         <div class="divider"></div>
         <div class="grid-3 stagger">
-          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">📊</div><div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Dashboard Design</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Designing clear, focused dashboards in Looker Studio that highlight the metrics teams actually need to make decisions.</div></div>
-          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">🗂️</div><div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Data Structuring</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Organising datasets, defining metrics consistently, and making sure reports tell the same story across the business.</div></div>
-          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">☁️</div><div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Google Cloud (GCP)</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Working with BigQuery and Google Cloud tools daily — querying, scheduling, and managing data at scale.</div></div>
+          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">📊</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Dashboard Design</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Designing clear, focused dashboards in Looker Studio that highlight the metrics teams actually need to make decisions.</div></div>
+          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">🗂️</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Data Structuring</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Organising datasets, defining metrics consistently, and making sure reports tell the same story across the business.</div></div>
+          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">☁️</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Google Cloud (GCP)</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Working with BigQuery and Google Cloud tools daily — querying, scheduling, and managing data at scale.</div></div>
         </div>
         <div class="page-footer">© 2026 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="https://github.com/donaldebube" target="_blank">GITHUB</a> · <a href="#">CONTACT</a></div>
       </div>
@@ -657,7 +655,7 @@ const PROJECTS = [
     github:"https://github.com/donaldebube/Nigeria-Cars-Dataset-Case-Study-with-Python/wiki/Navigating-Nigeria's-Car-Market:-A-Data-Driven-Analysis",
     tags:["POWER BI","MICROSOFT SQL SERVER"],
     shortDesc:"An analytical deep-dive into the Nigerian car market — covering car models, body types, fuel types, and price ranges to help buyers, dealers, and platforms make informed decisions.",
-    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria’s automotive industry by analyzing factors such as car models, body types, fuel types, vehicle condition (brand new, foreign used, and Nigerian used), and pricing. The study aims to help stakeholders—including dealers, importers, and investors—make informed decisions by identifying key patterns such as the dominance of foreign used vehicles, the popularity of SUVs and sedans, the strong market presence of brands like Toyota and Honda, and the significant influence of affordability on purchasing behavior. Through structured data cleaning, analysis, and visualization using tools like SQL and Excel, the project uncovers actionable insights on market distribution, pricing dynamics, and demand trends, ultimately enabling better strategic planning and opportunity identification within the Nigerian car market.
+    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria's automotive industry by analyzing factors such as car models, body types, fuel types, vehicle condition (brand new, foreign used, and Nigerian used), and pricing. The study aims to help stakeholders—including dealers, importers, and investors—make informed decisions by identifying key patterns such as the dominance of foreign used vehicles, the popularity of SUVs and sedans, the strong market presence of brands like Toyota and Honda, and the significant influence of affordability on purchasing behavior. Through structured data cleaning, analysis, and visualization using tools like SQL and Excel, the project uncovers actionable insights on market distribution, pricing dynamics, and demand trends, ultimately enabling better strategic planning and opportunity identification within the Nigerian car market.
 </p>`,
     cats:["All Projects","Fintech"],
     impact:"Actionable insights for buyers, dealers & platforms"
@@ -691,7 +689,7 @@ const PROJECTS = [
     github:"https://www.kaggle.com/code/donaldebube/airbnb-case-study-for-real-estate-zone",
     tags:["Tableau","microsoft excel"],
     shortDesc:"This project analyzes Airbnb data in Canada to help Real Estate Zone evaluate the profitability of entering the short-term rental market. The analysis identifies high-performing locations, pricing trends, and key factors that influence revenue, enabling data-driven decisions for business expansion.",
-    fullDesc:`<p>The Airbnb Market Analysis for Real Estate Zone is a data-driven project designed to support the company’s planned expansion from Nigeria into the Canadian real estate market. With a strategic focus on entering the short-term rental (Airbnb) sector, the project aims to determine whether this venture would be profitable and to identify the most lucrative locations for investment.
+    fullDesc:`<p>The Airbnb Market Analysis for Real Estate Zone is a data-driven project designed to support the company's planned expansion from Nigeria into the Canadian real estate market. With a strategic focus on entering the short-term rental (Airbnb) sector, the project aims to determine whether this venture would be profitable and to identify the most lucrative locations for investment.
 
 Using Airbnb listing data across Canada, the analysis explores key variables such as location, pricing, property types, availability, and occupancy-related indicators. The goal is to uncover patterns that drive revenue and highlight cities or neighborhoods with the highest earning potential.
 
@@ -931,7 +929,6 @@ function openDrawer(projId){
 
   document.getElementById("drawer-desc").innerHTML=p.fullDesc;
 
-  // 👇 UPDATED STACK + GITHUB BUTTON
   let githubBtn = "";
   if(p.github){
     githubBtn = `
