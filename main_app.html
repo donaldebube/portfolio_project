@@ -9,7 +9,7 @@
 <style>
 :root {
   --bg:      #090d12; --bg2:#0d1520; --card:#111b27; --card2:#16202e;
-  --sidebar: #070c11; --accent:#00d4b8; --accent-d:#00a896;
+  --sidebar: #0f1722; --accent:#00d4b8; --accent-d:#00a896;
   --adim:    rgba(0,212,184,0.10); --bacc:rgba(0,212,184,0.25);
   --text:    #ffffff; --text2:#8896aa; --text3:#4a5a6e;
   --border:  rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
@@ -49,30 +49,89 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 #app{display:flex;min-height:100vh;position:relative;z-index:2}
 
 /* ── SIDEBAR ── */
-#sidebar{width:var(--nav-w);min-height:100vh;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:background .3s var(--ease),transform .35s var(--ease);overflow:hidden}
+#sidebar{
+  width:var(--nav-w);
+  min-height:100vh;
+  background:linear-gradient(180deg,#0f1722 0%, #111c29 100%);
+  border-right:1px solid rgba(255,255,255,0.10);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  z-index:100;
+  transition:background .3s var(--ease),transform .35s var(--ease);
+  overflow:hidden;
+}
 #sidebar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to top,rgba(0,212,184,.04),transparent);pointer-events:none}
 .sb-brand{padding:1.7rem 1.5rem 1rem;border-bottom:1px solid var(--border)}
-.sb-brand-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:.96rem;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
-.sb-brand-sub{font-size:.68rem;color:#6b7f94;margin-top:.22rem}
+.sb-brand-name{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.96rem;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:-.01em;
+  line-height:1.2
+}
+.sb-brand-sub{
+  font-size:.72rem;
+  color:#a9b7c8;
+  margin-top:.22rem
+}
 .sb-nav{flex:1;padding:.6rem 0;overflow-y:auto}
-.sb-nav-item{display:flex;align-items:center;gap:.7rem;padding:.72rem 1.5rem;font-size:.86rem;font-weight:500;color:#7a8fa8;border-left:3px solid transparent;transition:all .2s ease;cursor:none;white-space:nowrap;position:relative;overflow:hidden}
+.sb-nav-item{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  padding:.82rem 1.5rem;
+  font-size:.9rem;
+  font-weight:600;
+  color:#c6d2df;
+  border-left:3px solid transparent;
+  transition:all .2s ease;
+  cursor:pointer;
+  white-space:nowrap;
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  text-align:left;
+  background:none;
+  border-top:none;
+  border-right:none;
+  border-bottom:none;
+}
 .sb-nav-item::before{content:'';position:absolute;inset:0;background:var(--adim);opacity:0;transition:opacity .2s}
-.sb-nav-item:hover{color:#fff;border-left-color:rgba(0,212,184,.45)}
+.sb-nav-item:hover{
+  color:#fff;
+  background:rgba(255,255,255,.05);
+  border-left-color:rgba(0,212,184,.55)
+}
 .sb-nav-item:hover::before{opacity:1}
-.sb-nav-item.active{color:#fff;border-left-color:var(--accent);font-weight:600;background:rgba(0,212,184,.09)}
-.sb-nav-item .nav-icon{font-size:.9rem;width:1.1rem;text-align:center;flex-shrink:0}
+.sb-nav-item.active{
+  color:#fff;
+  border-left-color:var(--accent);
+  font-weight:700;
+  background:rgba(0,212,184,.14)
+}
+.sb-nav-item .nav-icon{
+  font-size:1rem;
+  width:1.1rem;
+  text-align:center;
+  flex-shrink:0
+}
 .sb-divider{height:1px;background:var(--border);margin:.6rem 1.2rem}
 .sb-bottom{padding:0 1.1rem 1.5rem}
 .btn-cv{width:100%;padding:.62rem 1rem;background:var(--accent);color:#000;font-size:.82rem;font-weight:700;border-radius:8px;cursor:none;box-shadow:0 4px 18px rgba(0,212,184,.22);transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:.5rem}
 .btn-cv:hover{box-shadow:0 6px 28px rgba(0,212,184,.38);transform:translateY(-1px)}
-.btn-theme{width:100%;padding:.55rem 1rem;color:#6b7f94;font-size:.78rem;font-weight:500;border-radius:8px;cursor:none;margin-top:.5rem;transition:all .2s;display:flex;align-items:center;gap:.5rem}
-.btn-theme:hover{color:#9aaabb;background:rgba(255,255,255,.04)}
+.btn-theme{width:100%;padding:.55rem 1rem;color:#9fb0c2;font-size:.78rem;font-weight:500;border-radius:8px;cursor:none;margin-top:.5rem;transition:all .2s;display:flex;align-items:center;gap:.5rem}
+.btn-theme:hover{color:#fff;background:rgba(255,255,255,.04)}
 .sb-avail{margin:.8rem 0;background:rgba(0,212,184,.07);border:1px solid rgba(0,212,184,.18);border-radius:8px;padding:.65rem .85rem}
 .sb-avail-head{display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem}
 .sb-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:pulse 2s infinite}
 .sb-avail-label{font-size:.62rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-.sb-avail-text{font-size:.68rem;color:#6b7f94;line-height:1.55}
-.sb-copy{text-align:center;font-size:.54rem;color:rgba(255,255,255,.13);letter-spacing:.06em;margin-top:.8rem}
+.sb-avail-text{font-size:.68rem;color:#b4c0cd;line-height:1.55}
+.sb-copy{text-align:center;font-size:.54rem;color:rgba(255,255,255,.32);letter-spacing:.06em;margin-top:.8rem}
 
 /* ── MAIN ── */
 #main{margin-left:var(--nav-w);flex:1;min-height:100vh;display:flex;flex-direction:column;transition:margin-left .35s var(--ease)}
@@ -193,20 +252,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
 .proj-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,var(--adim))}
 .proj-body{padding:1.15rem}
 .proj-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:.35rem;margin-top:.5rem;line-height:1.3}
-.proj-desc-short{font-size:.79rem;color:var(--text2);line-height:1.7;margin-bottom:.75rem;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.proj-desc-short{font-size:.79rem;color:var(--text2);line-height:1.7;margin-bottom:.75rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .proj-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:.6rem;margin-top:.6rem}
 .proj-impact{
   font-size:.7rem;
   color:var(--accent);
   font-weight:700;
-  white-space: pre-line;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  line-height: 1.4;
+  white-space:pre-line;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  line-height:1.4;
 }
-
-/* View Details button on each card */
 .proj-view-btn{
   width:100%; margin-top:.8rem;
   padding:.48rem 1rem;
@@ -220,7 +276,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   display:flex; align-items:center; justify-content:center; gap:.4rem;
 }
 .proj-view-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
-
 .count-badge{font-size:.67rem;color:var(--text3);letter-spacing:.08em;margin-bottom:1.3rem}
 .count-badge .hl{color:var(--accent);font-weight:700}
 
@@ -293,10 +348,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   font-size:1.1rem;
   font-weight:700;
   color:var(--accent);
-  white-space: pre-line;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  line-height: 1.4;
+  white-space:pre-line;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  line-height:1.4;
 }
 .drawer-impact-lbl{ font-size:.75rem; color:var(--text2); line-height:1.5; }
 
@@ -340,9 +395,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   body{cursor:auto}
   button{cursor:auto}
   #cursor-dot,#cursor-ring{display:none}
-  #sidebar{transform:translateX(-100%);box-shadow:none;z-index:200}
+  #sidebar{
+    transform:translateX(-100%);
+    box-shadow:none;
+    z-index:200;
+    background:linear-gradient(180deg,#13202d 0%, #182635 100%);
+  }
   #sidebar.open{transform:translateX(0);box-shadow:8px 0 40px rgba(0,0,0,.5)}
-  #sidebar-overlay{display:block}  #main{margin-left:0!important}
+  #sidebar-overlay{display:block}
+  #main{margin-left:0!important}
   #menu-btn{display:flex}
   #topbar{padding:.6rem 1rem;gap:.6rem}
   #search-wrap{max-width:none}
@@ -363,6 +424,27 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
   .hero-btns .btn{width:100%;justify-content:center}
   .page-footer{font-size:.6rem;line-height:2}
   #proj-drawer{width:100vw}
+
+  .sb-nav-item,
+  .proj-card,
+  .proj-view-btn,
+  .btn,
+  .btn-cv,
+  .btn-theme,
+  .top-toggle,
+  #menu-btn{
+    cursor:pointer;
+  }
+
+  .sb-nav-item{
+    color:#d7e1eb;
+  }
+
+  .sb-brand-sub,
+  .sb-avail-text,
+  .sb-copy{
+    color:#b4c0cd;
+  }
 }
 @media(max-width:480px){
   #page-wrap{padding:1rem .85rem 2.5rem}
@@ -446,11 +528,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
       <div class="sb-brand-name">Donald Ebube</div>
       <div class="sb-brand-sub">Data Analyst → Business Intelligence</div>
     </div>
+
     <div class="sb-nav" id="nav-list">
-      <div class="sb-nav-item active" data-page="overview"><span class="nav-icon">⊞</span> Overview</div>
-      <div class="sb-nav-item" data-page="projects"><span class="nav-icon">📁</span> Projects</div>
-      <div class="sb-nav-item" data-page="skills"><span class="nav-icon">◎</span> Skills</div>
+      <button type="button" class="sb-nav-item active" data-page="overview"><span class="nav-icon">⊞</span> Overview</button>
+      <button type="button" class="sb-nav-item" data-page="projects"><span class="nav-icon">📁</span> Projects</button>
+      <button type="button" class="sb-nav-item" data-page="skills"><span class="nav-icon">◎</span> Skills</button>
     </div>
+
     <div class="sb-divider"></div>
     <div class="sb-bottom">
       <button class="btn-cv" id="btn-dl-cv">⬇ &nbsp;Download CV</button>
@@ -641,9 +725,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;bac
         <div class="page-footer">© 2026 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="https://github.com/donaldebube" target="_blank">GITHUB</a> · <a href="#">CONTACT</a></div>
       </div>
 
-    </div><!-- /page-wrap -->
-  </div><!-- /main -->
-</div><!-- /app -->
+    </div>
+  </div>
+</div>
 
 <script>
 // ── DATA ──────────────────────────────────────
@@ -655,8 +739,7 @@ const PROJECTS = [
     github:"https://github.com/donaldebube/Nigeria-Cars-Dataset-Case-Study-with-Python/wiki/Navigating-Nigeria's-Car-Market:-A-Data-Driven-Analysis",
     tags:["POWER BI","MICROSOFT SQL SERVER"],
     shortDesc:"An analytical deep-dive into the Nigerian car market — covering car models, body types, fuel types, and price ranges to help buyers, dealers, and platforms make informed decisions.",
-    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria's automotive industry by analyzing factors such as car models, body types, fuel types, vehicle condition (brand new, foreign used, and Nigerian used), and pricing. The study aims to help stakeholders—including dealers, importers, and investors—make informed decisions by identifying key patterns such as the dominance of foreign used vehicles, the popularity of SUVs and sedans, the strong market presence of brands like Toyota and Honda, and the significant influence of affordability on purchasing behavior. Through structured data cleaning, analysis, and visualization using tools like SQL and Excel, the project uncovers actionable insights on market distribution, pricing dynamics, and demand trends, ultimately enabling better strategic planning and opportunity identification within the Nigerian car market.
-</p>`,
+    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria's automotive industry by analyzing factors such as car models, body types, fuel types, vehicle condition (brand new, foreign used, and Nigerian used), and pricing. The study aims to help stakeholders—including dealers, importers, and investors—make informed decisions by identifying key patterns such as the dominance of foreign used vehicles, the popularity of SUVs and sedans, the strong market presence of brands like Toyota and Honda, and the significant influence of affordability on purchasing behavior. Through structured data cleaning, analysis, and visualization using tools like SQL and Excel, the project uncovers actionable insights on market distribution, pricing dynamics, and demand trends, ultimately enabling better strategic planning and opportunity identification within the Nigerian car market.</p>`,
     cats:["All Projects","Fintech"],
     impact:"Actionable insights for buyers, dealers & platforms"
   },
@@ -689,13 +772,10 @@ const PROJECTS = [
     github:"https://www.kaggle.com/code/donaldebube/airbnb-case-study-for-real-estate-zone",
     tags:["Tableau","microsoft excel"],
     shortDesc:"This project analyzes Airbnb data in Canada to help Real Estate Zone evaluate the profitability of entering the short-term rental market. The analysis identifies high-performing locations, pricing trends, and key factors that influence revenue, enabling data-driven decisions for business expansion.",
-    fullDesc:`<p>The Airbnb Market Analysis for Real Estate Zone is a data-driven project designed to support the company's planned expansion from Nigeria into the Canadian real estate market. With a strategic focus on entering the short-term rental (Airbnb) sector, the project aims to determine whether this venture would be profitable and to identify the most lucrative locations for investment.
-
-Using Airbnb listing data across Canada, the analysis explores key variables such as location, pricing, property types, availability, and occupancy-related indicators. The goal is to uncover patterns that drive revenue and highlight cities or neighborhoods with the highest earning potential.
-
-The project answers critical business questions, including which regions in Canada generate the most Airbnb income, what types of properties perform best, and how pricing strategies vary across locations. It also evaluates market competitiveness and demand trends to guide investment decisions.
-
-Through data cleaning, exploration, and visualization using tools such as SQL and Excel (or BI tools), the project delivers actionable insights that help the CEO understand market opportunities, minimize risk, and make informed expansion decisions. Ultimately, this analysis positions Real Estate Zone to strategically enter the Canadian Airbnb market with a clear, evidence-based approach to profitability and growth.</p>`,
+    fullDesc:`<p>The Airbnb Market Analysis for Real Estate Zone is a data-driven project designed to support the company's planned expansion from Nigeria into the Canadian real estate market. With a strategic focus on entering the short-term rental (Airbnb) sector, the project aims to determine whether this venture would be profitable and to identify the most lucrative locations for investment.</p>
+<p>Using Airbnb listing data across Canada, the analysis explores key variables such as location, pricing, property types, availability, and occupancy-related indicators. The goal is to uncover patterns that drive revenue and highlight cities or neighborhoods with the highest earning potential.</p>
+<p>The project answers critical business questions, including which regions in Canada generate the most Airbnb income, what types of properties perform best, and how pricing strategies vary across locations. It also evaluates market competitiveness and demand trends to guide investment decisions.</p>
+<p>Through data cleaning, exploration, and visualization using tools such as SQL and Excel (or BI tools), the project delivers actionable insights that help the CEO understand market opportunities, minimize risk, and make informed expansion decisions. Ultimately, this analysis positions Real Estate Zone to strategically enter the Canadian Airbnb market with a clear, evidence-based approach to profitability and growth.</p>`,
     cats:["All Projects","Fintech"],
     impact:"Identified the most profitable Airbnb markets in Canada to guide high-impact, data-driven expansion decisions."
   },
@@ -706,11 +786,9 @@ Through data cleaning, exploration, and visualization using tools such as SQL an
     github:"https://github.com/donaldebube/Health-Substance-Abuse-Analysis/wiki/SUBSTANCE-ABUSE-ANALYSIS---Enterprise-DNA",
     tags:["BIGQUERY", "POWER BI"],
     shortDesc:"This project analyzes substance abuse data to identify the most commonly used substances, evaluate recovery trends, and uncover insights that can support more effective treatment strategies and improve patient outcomes.",
-    fullDesc:`<p>The Substance Abuse Analysis project explores patterns and impacts of harmful substance use by analyzing patient-level data related to the consumption of psychoactive substances, including alcohol and illicit drugs. The study focuses on understanding the prevalence of different substances, their effects on recovery outcomes, and the broader implications on health and society.
-
-Using the dataset, the analysis identifies the most frequently consumed substances among patients, examines recovery rates, and evaluates factors that may influence successful rehabilitation. The goal is to uncover actionable insights that can inform healthcare providers, policymakers, and support organizations on how to better design intervention strategies and allocate resources effectively.
-
-Through data cleaning, exploration, and analysis using tools such as SQL and Excel or visualization platforms, the project highlights trends in substance usage and recovery performance. Ultimately, the findings provide a data-driven foundation for improving treatment approaches, enhancing patient recovery rates, and reducing the long-term social and economic burden of substance abuse.</p>`,
+    fullDesc:`<p>The Substance Abuse Analysis project explores patterns and impacts of harmful substance use by analyzing patient-level data related to the consumption of psychoactive substances, including alcohol and illicit drugs. The study focuses on understanding the prevalence of different substances, their effects on recovery outcomes, and the broader implications on health and society.</p>
+<p>Using the dataset, the analysis identifies the most frequently consumed substances among patients, examines recovery rates, and evaluates factors that may influence successful rehabilitation. The goal is to uncover actionable insights that can inform healthcare providers, policymakers, and support organizations on how to better design intervention strategies and allocate resources effectively.</p>
+<p>Through data cleaning, exploration, and analysis using tools such as SQL and Excel or visualization platforms, the project highlights trends in substance usage and recovery performance. Ultimately, the findings provide a data-driven foundation for improving treatment approaches, enhancing patient recovery rates, and reducing the long-term social and economic burden of substance abuse.</p>`,
     cats:["All Projects","Automations"],
     impact:"Uncovered key substance use patterns and recovery insights to support more effective, data-driven treatment strategies."
   },
@@ -728,12 +806,12 @@ Through data cleaning, exploration, and analysis using tools such as SQL and Exc
 ];
 
 const SKILLS = [
-  {name:"BIGQUERY",          level:"Advanced",      pct:88, sub:"Data warehousing, query optimisation, large-scale analysis"},
-  {name:"SQL (BigQuery/MSSQL)",level:"Advanced",    pct:90, sub:"Complex joins, window functions, aggregations, performance tuning"},
-  {name:"LOOKER STUDIO",     level:"Advanced",      pct:85, sub:"Dashboard design, data connectors, report automation"},
-  {name:"MICROSOFT POWER BI",level:"Intermediate",  pct:74, sub:"Report building, DAX basics, data modelling"},
-  {name:"GOOGLE APPS SCRIPT",level:"Intermediate",  pct:72, sub:"Automating reports, alerts, and workflows in Google Sheets"},
-  {name:"PYTHON",            level:"Intermediate",  pct:65, sub:"Data analysis with Pandas, scripting, and basic automation"},
+  {name:"BIGQUERY", level:"Advanced", pct:88, sub:"Data warehousing, query optimisation, large-scale analysis"},
+  {name:"SQL (BigQuery/MSSQL)", level:"Advanced", pct:90, sub:"Complex joins, window functions, aggregations, performance tuning"},
+  {name:"LOOKER STUDIO", level:"Advanced", pct:85, sub:"Dashboard design, data connectors, report automation"},
+  {name:"MICROSOFT POWER BI", level:"Intermediate", pct:74, sub:"Report building, DAX basics, data modelling"},
+  {name:"GOOGLE APPS SCRIPT", level:"Intermediate", pct:72, sub:"Automating reports, alerts, and workflows in Google Sheets"},
+  {name:"PYTHON", level:"Intermediate", pct:65, sub:"Data analysis with Pandas, scripting, and basic automation"},
 ];
 const FILTERS = ["All Projects","Automations","Fintech"];
 
@@ -745,15 +823,36 @@ let isDark=true, methodOpen=false, skillsAnimated=false;
 const dot=document.getElementById("cursor-dot"),ring=document.getElementById("cursor-ring");
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;});
-(function animCursor(){dot.style.left=mx+"px";dot.style.top=my+"px";rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(animCursor);})();
+(function animCursor(){
+  if(window.innerWidth <= 768) return;
+  dot.style.left=mx+"px";
+  dot.style.top=my+"px";
+  rx+=(mx-rx)*.14;
+  ry+=(my-ry)*.14;
+  ring.style.left=rx+"px";
+  ring.style.top=ry+"px";
+  requestAnimationFrame(animCursor);
+})();
 
 // ── MOBILE SIDEBAR ──────────────────────────
-const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("sidebar-overlay"),menuBtn=document.getElementById("menu-btn");
-function openSidebar(){sidebar.classList.add("open");overlay.classList.add("show");menuBtn.classList.add("open");document.body.style.overflow="hidden";}
-function closeSidebar(){sidebar.classList.remove("open");overlay.classList.remove("show");menuBtn.classList.remove("open");document.body.style.overflow="";}
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("sidebar-overlay");
+const menuBtn=document.getElementById("menu-btn");
+
+function openSidebar(){
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+  menuBtn.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeSidebar(){
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+  menuBtn.classList.remove("open");
+  document.body.style.overflow="";
+}
 menuBtn.addEventListener("click",()=>sidebar.classList.contains("open")?closeSidebar():openSidebar());
 overlay.addEventListener("click",closeSidebar);
-document.querySelectorAll(".sb-nav-item").forEach(item=>{item.addEventListener("click",()=>{if(window.innerWidth<=768)closeSidebar();});});
 
 // ── PARTICLES ──────────────────────────────
 (function(){
@@ -764,10 +863,18 @@ document.querySelectorAll(".sb-nav-item").forEach(item=>{item.addEventListener("
   function draw(){
     ctx.clearRect(0,0,W,H);
     const rgb=isDark?"0,212,184":"0,168,150";
-    ctx.strokeStyle=isDark?"rgba(255,255,255,0.025)":"rgba(0,0,0,0.03)";ctx.lineWidth=1;
+    ctx.strokeStyle=isDark?"rgba(255,255,255,0.025)":"rgba(0,0,0,0.03)";
+    ctx.lineWidth=1;
     for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
     for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(${rgb},${p.a})`;ctx.fill();});
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${rgb},${p.a})`;
+      ctx.fill();
+    });
     requestAnimationFrame(draw);
   }
   resize();create();draw();
@@ -779,16 +886,34 @@ function showPage(pageId){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".sb-nav-item").forEach(n=>n.classList.remove("active"));
   document.getElementById("page-"+pageId)?.classList.add("active");
-  document.querySelector(`[data-page="${pageId}"]`)?.classList.add("active");
+  document.querySelector(`.sb-nav-item[data-page="${pageId}"]`)?.classList.add("active");
+
   const hints={overview:"Search insights…",projects:"Search projects…",skills:"Search tools & skills…"};
   document.getElementById("search-input").placeholder=hints[pageId]||"Search…";
+
   currentPage=pageId;
-  if(pageId==="skills"&&!skillsAnimated){setTimeout(animateSkills,200);skillsAnimated=true;}
-  if(pageId==="overview")animateCounters();
-  if(pageId==="projects")renderProjects();
+
+  if(pageId==="skills"&&!skillsAnimated){
+    setTimeout(animateSkills,200);
+    skillsAnimated=true;
+  }
+  if(pageId==="overview") animateCounters();
+  if(pageId==="projects") renderProjects();
+
   window.scrollTo({top:0,behavior:"smooth"});
 }
-document.querySelectorAll(".sb-nav-item").forEach(item=>{item.addEventListener("click",()=>showPage(item.dataset.page));});
+
+document.querySelectorAll(".sb-nav-item").forEach(item => {
+  item.addEventListener("click", (e) => {
+    e.preventDefault();
+    const page = item.dataset.page;
+    showPage(page);
+
+    if (window.innerWidth <= 768) {
+      closeSidebar();
+    }
+  });
+});
 
 // ── THEME ──────────────────────────────────
 function setTheme(dark){
@@ -813,7 +938,9 @@ document.getElementById("btn-sk-proj").addEventListener("click",()=>showPage("pr
 
 // ── TOAST ──────────────────────────────────
 function showToast(msg){
-  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),3000);
 }
 document.getElementById("btn-dl-cv").addEventListener("click",()=>showToast("📄 Add your CV link here to enable download!"));
@@ -823,7 +950,11 @@ function animateCounters(){
   document.querySelectorAll("[data-count]").forEach(el=>{
     const target=parseFloat(el.dataset.count),suffix=el.dataset.suffix||"",decimal=parseInt(el.dataset.decimal)||0;
     const dur=1400,start=performance.now();
-    (function step(now){const t=Math.min((now-start)/dur,1),e=t<.5?2*t*t:-1+(4-2*t)*t;el.textContent=(target*e).toFixed(decimal)+suffix;if(t<1)requestAnimationFrame(step);})(start);
+    (function step(now){
+      const t=Math.min((now-start)/dur,1),e=t<.5?2*t*t:-1+(4-2*t)*t;
+      el.textContent=(target*e).toFixed(decimal)+suffix;
+      if(t<1)requestAnimationFrame(step);
+    })(start);
   });
 }
 
@@ -838,45 +969,52 @@ function animateCounters(){
       <div class="mini-proj-title">${p.title}</div>
       <div class="mini-proj-desc">${p.shortDesc.slice(0,90)}…</div>
       <div class="mini-proj-impact">${p.impact}</div>`;
-    el.addEventListener("click",()=>openDrawer(p.id));
+
+    el.addEventListener("click", () => {
+      showPage("projects");
+      setTimeout(() => openDrawer(p.id), 150);
+    });
+
     c.appendChild(el);
   });
 })();
 
 // ── PROJECTS GRID ──────────────────────────────
 function renderFilterRow(){
-  const row=document.getElementById("filter-row");row.innerHTML="";
+  const row=document.getElementById("filter-row");
+  row.innerHTML="";
   FILTERS.forEach(f=>{
     const pill=document.createElement("button");
     pill.className="filter-pill"+(f===currentFilter?" active":"");
     pill.textContent=f;
-    pill.addEventListener("click",()=>{currentFilter=f;renderProjects();});
+    pill.addEventListener("click",()=>{
+      currentFilter=f;
+      renderProjects();
+    });
     row.appendChild(pill);
   });
 }
+
 function renderProjects(){
   renderFilterRow();
+
   const grid=document.getElementById("proj-grid"),
         badge=document.getElementById("proj-count");
 
   const shown=PROJECTS.filter(p=>p.cats.includes(currentFilter));
 
   badge.innerHTML=`SHOWING · <span class="hl">${currentFilter.toUpperCase()}</span> · ${shown.length} PROJECTS`;
-
   grid.innerHTML="";
 
   shown.forEach((p,i)=>{
     const card=document.createElement("div");
     card.className="proj-card";
-
-    card.style.cssText=`opacity:0;transform:translateY(16px);
-      transition:opacity .4s ease ${i*.07}s,transform .4s ease ${i*.07}s;`;
+    card.style.cssText=`opacity:0;transform:translateY(16px);transition:opacity .4s ease ${i*.07}s,transform .4s ease ${i*.07}s;`;
 
     card.innerHTML=`
       <div class="proj-thumb">${p.icon}</div>
       <div class="proj-body">
         <div>${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
-
         <div class="proj-title">${p.title}</div>
         <div class="proj-desc-short">${p.shortDesc}</div>
 
@@ -887,21 +1025,21 @@ function renderProjects(){
         <button class="proj-view-btn">Read Full Description ↗</button>
 
         ${p.github ? `
-          <a href="${p.github}" target="_blank"
-             class="proj-view-btn" style="margin-top:.5rem;">
+          <a href="${p.github}" target="_blank" class="proj-view-btn" style="margin-top:.5rem;">
             💻 View on GitHub
           </a>
         ` : ""}
       </div>`;
 
-    card.querySelector(".proj-view-btn")
-        .addEventListener("click",e=>{
-          e.stopPropagation();
-          openDrawer(p.id);
-        });
+    const readBtn = card.querySelector("button.proj-view-btn");
+    if(readBtn){
+      readBtn.addEventListener("click",e=>{
+        e.stopPropagation();
+        openDrawer(p.id);
+      });
+    }
 
     card.addEventListener("click",()=>openDrawer(p.id));
-
     grid.appendChild(card);
   });
 
@@ -924,27 +1062,21 @@ function openDrawer(projId){
 
   document.getElementById("drawer-icon").textContent=p.icon;
   document.getElementById("drawer-title-top").textContent=p.title;
-  document.getElementById("drawer-tags-top").innerHTML=
-    p.tags.map(t=>`<span class="tag">${t}</span>`).join("");
-
+  document.getElementById("drawer-tags-top").innerHTML=p.tags.map(t=>`<span class="tag">${t}</span>`).join("");
   document.getElementById("drawer-desc").innerHTML=p.fullDesc;
 
   let githubBtn = "";
   if(p.github){
     githubBtn = `
-      <a href="${p.github}" target="_blank"
-         class="proj-view-btn"
-         style="margin-top:1rem;display:inline-flex;">
+      <a href="${p.github}" target="_blank" class="proj-view-btn" style="margin-top:1rem;display:inline-flex;">
         💻 View Full Code on GitHub
       </a>
     `;
   }
 
-  document.getElementById("drawer-stack").innerHTML =
-    p.tags.map(t=>`<span class="tag">${t}</span>`).join("") + githubBtn;
+  document.getElementById("drawer-stack").innerHTML = p.tags.map(t=>`<span class="tag">${t}</span>`).join("") + githubBtn;
 
   const impactBox=document.getElementById("drawer-impact-box");
-
   if(p.impact){
     document.getElementById("drawer-impact-val").textContent=p.impact;
     impactBox.style.display="flex";
@@ -955,7 +1087,6 @@ function openDrawer(projId){
   drawerOverlay.classList.add("open");
   drawer.classList.add("open");
   document.body.style.overflow="hidden";
-
   document.getElementById("proj-drawer-body").scrollTop=0;
 }
 
@@ -984,12 +1115,20 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeDrawer(); });
     </div>`;
   });
 })();
-function animateSkills(){document.querySelectorAll(".skill-fill").forEach(el=>{el.style.width=el.dataset.pct+"%";});}
+function animateSkills(){
+  document.querySelectorAll(".skill-fill").forEach(el=>{
+    el.style.width=el.dataset.pct+"%";
+  });
+}
 
 // ── SEARCH ──────────────────────────────────
 document.getElementById("search-input").addEventListener("input",e=>{
   const q=e.target.value.toLowerCase();
-  if(currentPage==="projects") document.querySelectorAll(".proj-card").forEach(c=>{c.style.display=c.textContent.toLowerCase().includes(q)?"":"none";});
+  if(currentPage==="projects"){
+    document.querySelectorAll(".proj-card").forEach(c=>{
+      c.style.display=c.textContent.toLowerCase().includes(q)?"":"none";
+    });
+  }
 });
 
 // ── INIT ──────────────────────────────────────
