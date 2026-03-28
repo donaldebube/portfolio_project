@@ -92,7 +92,7 @@ body::before{
   display:none;
   position:fixed;
   inset:0;
-  z-index:999;
+  z-index:998;
   background:rgba(0,0,0,.45);
   opacity:0;
   pointer-events:none;
@@ -104,7 +104,11 @@ body::before{
 }
 
 /* ── LAYOUT ── */
-#app{display:flex;min-height:100vh;position:relative;z-index:2}
+#app{
+  display:flex;
+  min-height:100vh;
+  position:relative;
+}
 
 /* ── SIDEBAR ── */
 #sidebar{
@@ -118,7 +122,7 @@ body::before{
   top:0;
   left:0;
   bottom:0;
-  z-index:1000;
+  z-index:1001;
   transition:transform .35s var(--ease), background .3s var(--ease);
   overflow:hidden;
 }
@@ -239,7 +243,9 @@ body::before{
   min-height:100vh;
   display:flex;
   flex-direction:column;
-  transition:margin-left .35s var(--ease)
+  transition:margin-left .35s var(--ease);
+  position:relative;
+  z-index:2;
 }
 
 /* ── TOPBAR ── */
@@ -646,7 +652,7 @@ body::before{
   #menu-btn{
     display:flex;
     position:relative;
-    z-index:1100;
+    z-index:1102;
   }
   #topbar{padding:.6rem 1rem;gap:.6rem}
   #search-wrap{max-width:none}
@@ -728,7 +734,6 @@ body::before{
 <div id="toast"></div>
 <div id="sidebar-overlay"></div>
 
-<!-- PROJECT DETAIL DRAWER -->
 <div id="proj-drawer-overlay"></div>
 <div id="proj-drawer">
   <div id="proj-drawer-header">
@@ -905,7 +910,7 @@ body::before{
         <div class="filter-row" id="filter-row"></div>
         <div class="count-badge" id="proj-count"></div>
         <div class="grid-3" id="proj-grid"></div>
-        <div class="page-footer">© 2026 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="https://github.com/donaldebube" target="_blank">GITHUB</a> · <a href="#">CONTACT</a></div>
+        <div class="page-footer">© 2026 Donald Ebube.&nbsp;&nbsp;<a href="https://github.com/donaldebube" target="_blank">GITHUB</a></div>
       </div>
 
       <div class="page" id="page-skills">
@@ -942,13 +947,6 @@ body::before{
             <button class="btn btn-secondary" style="width:100%;" id="btn-sk-proj">View Projects →</button>
           </div>
         </div>
-        <div class="divider"></div>
-        <div class="grid-3 stagger">
-          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">📊</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Dashboard Design</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Designing clear, focused dashboards in Looker Studio that highlight the metrics teams actually need to make decisions.</div></div>
-          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">🗂️</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Data Structuring</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Organising datasets, defining metrics consistently, and making sure reports tell the same story across the business.</div></div>
-          <div class="card"><div style="font-size:1.4rem;margin-bottom:.55rem;color:var(--accent);">☁️</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.35rem;">Google Cloud (GCP)</div><div style="font-size:.78rem;color:var(--text2);line-height:1.75;">Working with BigQuery and Google Cloud tools daily — querying, scheduling, and managing data at scale.</div></div>
-        </div>
-        <div class="page-footer">© 2026 Donald Ebube.&nbsp;&nbsp;<a href="#">LINKEDIN</a> · <a href="https://github.com/donaldebube" target="_blank">GITHUB</a> · <a href="#">CONTACT</a></div>
       </div>
     </div>
   </div>
@@ -963,7 +961,7 @@ const PROJECTS = [
     github:"https://github.com/donaldebube/Nigeria-Cars-Dataset-Case-Study-with-Python/wiki/Navigating-Nigeria's-Car-Market:-A-Data-Driven-Analysis",
     tags:["POWER BI","MICROSOFT SQL SERVER"],
     shortDesc:"An analytical deep-dive into the Nigerian car market — covering car models, body types, fuel types, and price ranges to help buyers, dealers, and platforms make informed decisions.",
-    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria's automotive industry by analyzing factors such as car models, body types, fuel types, vehicle condition (brand new, foreign used, and Nigerian used), and pricing. The study aims to help stakeholders—including dealers, importers, and investors—make informed decisions by identifying key patterns such as the dominance of foreign used vehicles, the popularity of SUVs and sedans, the strong market presence of brands like Toyota and Honda, and the significant influence of affordability on purchasing behavior. Through structured data cleaning, analysis, and visualization using tools like SQL and Excel, the project uncovers actionable insights on market distribution, pricing dynamics, and demand trends, ultimately enabling better strategic planning and opportunity identification within the Nigerian car market.</p>`,
+    fullDesc:`<p>The Nigerian Cars Market Analysis project provides a data-driven overview of trends and consumer behavior within Nigeria's automotive industry.</p>`,
     cats:["All Projects","Fintech"],
     impact:"Actionable insights for buyers, dealers & platforms"
   },
@@ -984,48 +982,10 @@ const PROJECTS = [
     title:"Pandemic Response in Africa: A COVID-19 Data Analysis Case Study",
     github:"https://github.com/donaldebube/Covid19-Report-Africa/wiki/Covid-19-Case-Study-%E2%80%93-Africa-Edition",
     tags:["MICROSOFT SQL SERVER", "POWER BI"],
-    shortDesc:"This case study explores which African countries managed the pandemic well and which struggled, to highlight gaps in resources and preparedness.",
-    fullDesc:`<p>This COVID-19 Africa-focused analysis explores how countries across the continent responded to the pandemic caused by SARS-CoV-2, using global datasets to evaluate performance and outcomes. The project aims to assess whether African nations handled the outbreak efficiently by analyzing key indicators such as case trends, recovery rates, and overall impact, while comparing performance across countries. By identifying which countries managed the crisis effectively and which struggled, the study highlights disparities in resources, preparedness, and response strategies, providing valuable insights into areas where healthcare systems and policy interventions can be strengthened.</p>`,
+    shortDesc:"This case study explores which African countries managed the pandemic well and which struggled.",
+    fullDesc:`<p>This COVID-19 Africa-focused analysis explores how countries across the continent responded to the pandemic.</p>`,
     cats:["All Projects","Fintech"],
     impact:"Exposed performance gaps across African countries"
-  },
-  {
-    id:4,
-    icon:"📊",
-    title:"Airbnb Case Study: Insights for Real Estate Growth and Optimization",
-    github:"https://www.kaggle.com/code/donaldebube/airbnb-case-study-for-real-estate-zone",
-    tags:["Tableau","microsoft excel"],
-    shortDesc:"This project analyzes Airbnb data in Canada to help Real Estate Zone evaluate the profitability of entering the short-term rental market. The analysis identifies high-performing locations, pricing trends, and key factors that influence revenue, enabling data-driven decisions for business expansion.",
-    fullDesc:`<p>The Airbnb Market Analysis for Real Estate Zone is a data-driven project designed to support the company's planned expansion from Nigeria into the Canadian real estate market. With a strategic focus on entering the short-term rental (Airbnb) sector, the project aims to determine whether this venture would be profitable and to identify the most lucrative locations for investment.</p>
-<p>Using Airbnb listing data across Canada, the analysis explores key variables such as location, pricing, property types, availability, and occupancy-related indicators. The goal is to uncover patterns that drive revenue and highlight cities or neighborhoods with the highest earning potential.</p>
-<p>The project answers critical business questions, including which regions in Canada generate the most Airbnb income, what types of properties perform best, and how pricing strategies vary across locations. It also evaluates market competitiveness and demand trends to guide investment decisions.</p>
-<p>Through data cleaning, exploration, and visualization using tools such as SQL and Excel (or BI tools), the project delivers actionable insights that help the CEO understand market opportunities, minimize risk, and make informed expansion decisions. Ultimately, this analysis positions Real Estate Zone to strategically enter the Canadian Airbnb market with a clear, evidence-based approach to profitability and growth.</p>`,
-    cats:["All Projects","Fintech"],
-    impact:"Identified the most profitable Airbnb markets in Canada to guide high-impact, data-driven expansion decisions."
-  },
-  {
-    id:5,
-    icon:"🧠",
-    title:"Substance Use & Recovery: A Data Analysis Case Study",
-    github:"https://github.com/donaldebube/Health-Substance-Abuse-Analysis/wiki/SUBSTANCE-ABUSE-ANALYSIS---Enterprise-DNA",
-    tags:["BIGQUERY", "POWER BI"],
-    shortDesc:"This project analyzes substance abuse data to identify the most commonly used substances, evaluate recovery trends, and uncover insights that can support more effective treatment strategies and improve patient outcomes.",
-    fullDesc:`<p>The Substance Abuse Analysis project explores patterns and impacts of harmful substance use by analyzing patient-level data related to the consumption of psychoactive substances, including alcohol and illicit drugs. The study focuses on understanding the prevalence of different substances, their effects on recovery outcomes, and the broader implications on health and society.</p>
-<p>Using the dataset, the analysis identifies the most frequently consumed substances among patients, examines recovery rates, and evaluates factors that may influence successful rehabilitation. The goal is to uncover actionable insights that can inform healthcare providers, policymakers, and support organizations on how to better design intervention strategies and allocate resources effectively.</p>
-<p>Through data cleaning, exploration, and analysis using tools such as SQL and Excel or visualization platforms, the project highlights trends in substance usage and recovery performance. Ultimately, the findings provide a data-driven foundation for improving treatment approaches, enhancing patient recovery rates, and reducing the long-term social and economic burden of substance abuse.</p>`,
-    cats:["All Projects","Automations"],
-    impact:"Uncovered key substance use patterns and recovery insights to support more effective, data-driven treatment strategies."
-  },
-  {
-    id:6,
-    icon:"💱",
-    title:"FX Reporting Automation",
-    github:"https://github.com/yourusername/fx-automation",
-    tags:["APPS SCRIPT","SQL"],
-    shortDesc:"Automated FX reporting...",
-    fullDesc:`<p>...</p>`,
-    cats:["All Projects","Automations","Fintech"],
-    impact:"Zero manual FX updates"
   }
 ];
 
@@ -1085,13 +1045,14 @@ function closeSidebar() {
 }
 
 menuBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   e.stopPropagation();
   if (sidebar.classList.contains("open")) {
     closeSidebar();
   } else {
     openSidebar();
   }
-});
+}, { passive: false });
 
 overlay.addEventListener("click", closeSidebar);
 
@@ -1182,14 +1143,17 @@ function showPage(pageId){
 }
 
 document.querySelectorAll(".sb-nav-item").forEach((item) => {
-  item.addEventListener("click", (e) => {
+  const go = (e) => {
     e.preventDefault();
     e.stopPropagation();
     const page = item.dataset.page;
     if (!page) return;
     showPage(page);
     closeSidebar();
-  });
+  };
+
+  item.addEventListener("click", go);
+  item.addEventListener("touchend", go, { passive: false });
 });
 
 function setTheme(dark){
